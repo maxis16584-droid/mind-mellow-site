@@ -16,9 +16,9 @@ body {
   flex-direction:column;
   align-items:center;
   position:relative;
-  overflow:hidden;
+  /* ❌ ไม่ต้องใช้ overflow:hidden */
+  overflow-x:hidden; /* คุมเฉพาะแนวนอนก็พอ */
   color:white;
-  /* เปลี่ยนพื้นหลังเป็นแดงเข้ม fade ไปดำ */
   background: linear-gradient(to bottom, #8B0000, #000000);
 }
 
