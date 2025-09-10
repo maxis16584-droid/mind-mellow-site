@@ -170,33 +170,60 @@ footer {
 <footer>ขอบคุณที่สนับสนุนเรา 🎵</footer>
 
 <script>
-// Form submit
 const form = document.getElementById('messageForm');
-const scriptURL = 'YOUR_WEB_APP_URL_HERE';
+const submitBtn = form.querySelector('button[type="submit"]');
+const statusEl = document.createElement('div');
+statusEl.style.marginTop = '12px';
+statusEl.style.textAlign = 'center';
+form.appendChild(statusEl);
 
-form.addEventListener('submit', e=>{
+const scriptURL = 'PASTE_WEB_APP_URL_HERE'; // วาง URL /exec ตรงนี้
+
+form.addEventListener('submit', async e => {
   e.preventDefault();
+  submitBtn.disabled = true;
+  submitBtn.textContent = 'กำลังส่ง...';
+  statusEl.textContent = '';
+
   const data = {
-    name: document.getElementById('name').value,
-    message: document.getElementById('message').value
+    name: document.getElementById('name').value.trim(),
+    message: document.getElementById('message').value.trim()
   };
-  fetch(scriptURL,{
-    method:'POST',
-    mode:'cors',
-    headers:{'Content-Type':'application/json'},
-    body:JSON.stringify(data)
-  })
-  .then(res=>res.json())
-  .then(resp=>{
-    if(resp.result==="success"){
-      alert('ขอบคุณ! เราได้รับข้อความของคุณ 🎵');
-      form.reset();
-    }else{
-      alert('มีบางอย่างผิดพลาด โปรดลองอีกครั้ง');
+
+  try {
+    const response = await fetch(scriptURL, {
+      method: 'POST',
+      mode: 'cors',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(data)
+    });
+
+    const text = await response.text();
+    let json = null;
+    try {
+      json = text ? JSON.parse(text) : null;
+    } catch {
+      throw new Error('เซิร์ฟเวอร์ไม่ได้ส่ง JSON กลับมา');
     }
-  })
-  .catch(err=>alert('มีข้อผิดพลาด: '+err));
+
+    if (json && json.result === 'success') {
+      statusEl.style.color = 'green';
+      statusEl.textContent = 'ส่งข้อความสำเร็จ ✅';
+      form.reset();
+    } else {
+      statusEl.style.color = 'red';
+      statusEl.textContent = 'ส่งไม่สำเร็จ ❌';
+    }
+  } catch (err) {
+    statusEl.style.color = 'red';
+    statusEl.textContent = 'มีปัญหา: ' + err;
+  } finally {
+    submitBtn.disabled = false;
+    submitBtn.textContent = 'ส่งข้อความ';
+  }
 });
+</script>
+
 
 // Floating emoji background dynamic
 const emojis = ["🍺","🍻","🖤","❤️"];
