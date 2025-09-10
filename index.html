@@ -177,7 +177,7 @@ statusEl.style.marginTop = '12px';
 statusEl.style.textAlign = 'center';
 form.appendChild(statusEl);
 
-const scriptURL = 'https://script.google.com/macros/s/AKfycbyx70s2tj6yuZ35dwB7bYDGqhoFqCyIaZVBmvyVjzjTJ4oqy1z3aqckj8zjiYTsP4td/exec';
+const scriptURL = 'https://script.google.com/macros/s/AKfycbx7BD_CfNjU-HbSnX0x-_0GWkDJPNltNpE2bEO2s7RVWqDGSkJgdFtz7J8iWkM8R_QZ/exec';
 form.addEventListener('submit', async e => {
   e.preventDefault();
   submitBtn.disabled = true;
@@ -192,7 +192,6 @@ form.addEventListener('submit', async e => {
   try {
     const response = await fetch(scriptURL, {
       method: 'POST',
-      mode: 'cors',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(data)
     });
