@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>สนับสนุน Mind Mellow</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Kanit:wght@400;700&family=Prompt:wght@400;600&display=swap" rel="stylesheet">
+
+<style>
+* {margin:0; padding:0; box-sizing:border-box;}
+body {
+  font-family: 'Kanit', 'Prompt', sans-serif;
+  min-height:100vh;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  position:relative;
+  /* ❌ ไม่ต้องใช้ overflow:hidden */
+  overflow-x:hidden; /* คุมเฉพาะแนวนอนก็พอ */
+  color:white;
+  background: linear-gradient(to bottom, #8B0000, #000000);
+}
+
+
+/* Floating emoji background */
+.emoji-bg {
+  position:absolute;
+  top:0; left:0;
+  width:100%; height:100%;
+  pointer-events:none;
+  overflow:hidden;
+  z-index:0;
+}
+
+/* Header */
+header {
+  width:100%;
+  text-align:center;
+  padding:30px 10px 10px 10px;
+  font-size:2em;
+  font-weight:700;
+  text-shadow:2px 2px 8px rgba(0,0,0,0.5);
+  position:relative;
+  z-index:1;
+}
+header small {
+  display:block;
+  font-size:0.65em;
+  font-weight:400;
+  margin-top:5px;
+}
+
+/* Main card */
+main {
+  position:relative;
+  width:90%;
+  max-width:500px;
+  background:rgba(255,255,255,0.95);
+  border-radius:25px;
+  padding:40px 30px 30px 30px;
+  margin-top:20px;
+  box-shadow:0 15px 30px rgba(0,0,0,0.4);
+  overflow:hidden;
+  z-index:1;
+}
+
+h2 {
+  text-align:center;
+  color:#b30000;
+  margin-bottom:20px;
+  font-weight:700;
+  font-size:1.5em;
+}
+
+input, textarea {
+  width:100%;
+  padding:14px;
+  margin:12px 0;
+  font-size:1em;
+  border:2px solid #ff4d4d;
+  border-radius:15px;
+  outline:none;
+  transition:0.3s;
+  font-family: 'Prompt', sans-serif;
+}
+input:focus, textarea:focus {
+  border-color:#800000;
+  box-shadow:0 0 12px rgba(128,0,0,0.4);
+}
+
+button {
+  background:#b30000;
+  color:white;
+  padding:15px;
+  border:none;
+  border-radius:15px;
+  width:100%;
+  font-size:1.2em;
+  cursor:pointer;
+  font-weight:600;
+  transition:0.3s;
+  box-shadow:0 6px 20px rgba(0,0,0,0.3);
+}
+button:hover {
+  background:#800000;
+  transform:translateY(-3px);
+  box-shadow:0 10px 25px rgba(0,0,0,0.5);
+}
+
+/* Tip section */
+.tip-section {
+  text-align:center;
+  margin-top:30px;
+  position:relative;
+}
+.tip-heart {
+  font-size:3em;
+  margin-bottom:20px; /* ลดช่องว่างหัวใจ */
+  display:block;
+}
+.tip-section h2 {
+  margin-bottom:10px;
+}
+.tip-section p {
+  color:black;
+  font-weight:600;
+  margin-bottom:15px;
+}
+.tip-section img {
+  width:240px; height:240px; 
+  border-radius:25px;
+  border:6px solid #b30000; 
+  box-shadow:0 10px 30px rgba(0,0,0,0.4);
+}
+
+footer {
+  margin:25px 0;
+  font-size:1em;
+  color:#800000;
+  text-align:center;
+  text-shadow:1px 1px 3px rgba(0,0,0,0.3);
+}
+</style>
+</head>
+<body>
+
+<div class="emoji-bg" id="emojiContainer"></div>
+
+<header>Mind Mellow
+  <small>SBD bar Bangpakong ทุกวันเสาร์ 21:00-22:00 / 22:30-23:30</small>
+</header>
+
+<main>
+  <h2>ฝากข้อความหาเรา</h2>
+  <form id="messageForm">
+    <input type="text" id="name" placeholder="ชื่อของคุณ" required>
+    <textarea id="message" placeholder="ข้อความของคุณ..." rows="4" required></textarea>
+    <button type="submit">ส่งข้อความ</button>
+  </form>
+
+  <div class="tip-section">
+    <span class="tip-heart">❤️</span>
+    <h2>สนับสนุนเรา</h2>
+    <p>สแกน QR พร้อมเพย์เพื่อส่งทิป</p>
+    <img src="qrcode.png" alt="QR Code พร้อมเพย์">
+  </div>
+</main>
+
+<footer>ขอบคุณที่สนับสนุนเรา 🎵</footer>
+
+<script>
+const form = document.getElementById('messageForm');
+const submitBtn = form.querySelector('button[type="submit"]');
+const statusEl = document.createElement('div');
+statusEl.style.marginTop = '12px';
+statusEl.style.textAlign = 'center';
+form.appendChild(statusEl);
+
+const scriptURL = 'https://script.google.com/macros/s/AKfycbyx70s2tj6yuZ35dwB7bYDGqhoFqCyIaZVBmvyVjzjTJ4oqy1z3aqckj8zjiYTsP4td/exec';
+form.addEventListener('submit', async e => {
+  e.preventDefault();
+  submitBtn.disabled = true;
+  submitBtn.textContent = 'กำลังส่ง...';
+  statusEl.textContent = '';
+
+  const data = {
+    name: document.getElementById('name').value.trim(),
+    message: document.getElementById('message').value.trim()
+  };
+
+  try {
+    const response = await fetch(scriptURL, {
+      method: 'POST',
+      mode: 'cors',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(data)
+    });
+
+    const text = await response.text();
+    let json = null;
+    try {
+      json = text ? JSON.parse(text) : null;
+    } catch {
+      throw new Error('เซิร์ฟเวอร์ไม่ได้ส่ง JSON กลับมา');
+    }
+
+    if (json && json.result === 'success') {
+      statusEl.style.color = 'green';
+      statusEl.textContent = 'ส่งข้อความสำเร็จ ✅';
+      form.reset();
+    } else {
+      statusEl.style.color = 'red';
+      statusEl.textContent = 'ส่งไม่สำเร็จ ❌';
+    }
+  } catch (err) {
+    statusEl.style.color = 'red';
+    statusEl.textContent = 'มีปัญหา: ' + err;
+  } finally {
+    submitBtn.disabled = false;
+    submitBtn.textContent = 'ส่งข้อความ';
+  }
+});
+  
+// Floating emoji background dynamic
+const emojis = ["🍺","🍻","🖤","❤️"];
+const container = document.getElementById('emojiContainer');
+
+const numEmojis = 150; // ลดจำนวนเพื่อไม่กระตุก
+let emojiElements = [];
+
+for(let i=0;i<numEmojis;i++){
+  const span = document.createElement('div');
+  span.textContent = emojis[Math.floor(Math.random()*emojis.length)];
+  span.style.position = 'absolute';
+  span.style.left = Math.random()*100 + 'vw';
+  span.style.top = Math.random()*100 + 'vh';
+  span.style.fontSize = (20+Math.random()*30)+'px';
+  span.style.opacity = 0.2 + Math.random()*0.5;
+  container.appendChild(span);
+  emojiElements.push({
+    el: span,
+    dx: (Math.random()-0.5)*0.2, // ช้า ลื่น
+    dy: (Math.random()-0.5)*0.2
+  });
+}
+
+// Animation
+function animate() {
+  emojiElements.forEach(obj=>{
+    let x = parseFloat(obj.el.style.left);
+    let y = parseFloat(obj.el.style.top);
+    x += obj.dx;
+    y += obj.dy;
+    if(x<0) x=100; if(x>100) x=0;
+    if(y<0) y=100; if(y>100) y=0;
+    obj.el.style.left = x + 'vw';
+    obj.el.style.top = y + 'vh';
+  });
+  requestAnimationFrame(animate);
+}
+animate();
+</script>
+
+</body>
+</html>
