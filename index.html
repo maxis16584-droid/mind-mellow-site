@@ -273,7 +273,37 @@ header img {
 }
 </style>
 
- <div id="live-messages"></div>
+ <h2 style="color:white; margin-top:40px;">ข้อความล่าสุด 📩</h2>
+
+<div id="messages-box">
+  <div id="messages"></div>
+</div>
+
+<style>
+  #messages-box {
+    width: 90%;
+    max-width: 600px;
+    height: 300px;              /* กล่องใหญ่ขึ้น */
+    margin: 20px auto;
+    background: rgba(0,0,0,0.85); /* พื้นหลังดำ */
+    border-radius: 15px;
+    padding: 20px;
+    overflow-y: auto;
+    box-shadow: 0 0 15px rgba(0,0,0,0.8);
+  }
+
+  #messages {
+    color: white;                /* ตัวหนังสือสีขาว */
+    font-size: 1.1em;
+    line-height: 1.6;
+    text-align: center;          /* ข้อความตรงกลาง */
+  }
+
+  #messages div {
+    margin-bottom: 12px;
+    text-shadow: 1px 1px 3px rgba(0,0,0,0.7);
+  }
+</style>
   
   <div class="tip-section">
     <span class="tip-heart">❤️</span>
@@ -328,7 +358,7 @@ const form = document.getElementById('messageForm');
 const statusEl = document.getElementById('status');
 
 // <<< URL ของ Apps Script >>>
-const SCRIPT_URL = "https://script.google.com/macros/s/AKfycby8yevwis88viXTeAUPLZhAwHH2J-P3gnbCpbeBSD1jBc4QPn08SiMf2PSap51-yHm9/exec";
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwUaIiLVXuBBd4wV_UWSbtaO2kn066sJExKwqXgEIOsEmHuTsQFoxzyMTf0QOFcTVww/exec";
 
 form.addEventListener('submit', async (e) => {
   e.preventDefault();
@@ -517,27 +547,34 @@ function playTruthOrDare() {
 
 
 <script>
-// ฟังก์ชันโหลดข้อความจาก Apps Script
+// URL Apps Script (doGet)
+const GET_URL = "https://script.google.com/macros/s/AKfycbwUaIiLVXuBBd4wV_UWSbtaO2kn066sJExKwqXgEIOsEmHuTsQFoxzyMTf0QOFcTVww/exec";
+
 async function loadMessages() {
   try {
-    const res = await fetch("https://script.google.com/macros/s/AKfycby8yevwis88viXTeAUPLZhAwHH2J-P3gnbCpbeBSD1jBc4QPn08SiMf2PSap51-yHm9/exec");
+    const res = await fetch(GET_URL);
     const data = await res.json();
 
-    if (data && data.length > 0) {
-      // เอาเฉพาะข้อความล่าสุด (อันบนสุดในชีท)
-      const lastMsg = data[data.length - 1];
-      document.getElementById("live-messages").innerText = `${lastMsg.name}: ${lastMsg.message}`;
-    }
+    const messagesDiv = document.getElementById("messages");
+    messagesDiv.innerHTML = "";
+
+    // เอาข้อความล่าสุดขึ้นก่อน
+    data.reverse().forEach(row => {
+      const div = document.createElement("div");
+      div.innerHTML = `<strong>${row.name}</strong>: ${row.message}`;
+      messagesDiv.appendChild(div);
+    });
+
   } catch (err) {
-    console.error("โหลดข้อความไม่สำเร็จ", err);
+    console.error("โหลดข้อความผิดพลาด", err);
   }
 }
 
-// โหลดครั้งแรก
+// โหลดข้อความตอนเปิดเว็บ
 loadMessages();
 
-// โหลดซ้ำทุกๆ 5 วินาที
-setInterval(loadMessages, 5000);
+// ตั้งให้ refresh ทุก 10 วินาที
+setInterval(loadMessages, 10000);
 </script>
 
   
