@@ -2,113 +2,52 @@
 <html lang="th">
 <head>
   <meta charset="UTF-8">
+  <title>Mind Mellow</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ส่งข้อความหา MindMellow</title>
-  <style>
-    /* ตกแต่งหน้าเว็บ */
-    body {
-      font-family: 'Prompt', sans-serif;
-      background: linear-gradient(135deg, #d9a7c7, #fffcdc);
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-      margin: 0;
-    }
-    .container {
-      background: white;
-      padding: 20px 30px;
-      border-radius: 16px;
-      box-shadow: 0 4px 20px rgba(0,0,0,0.15);
-      max-width: 400px;
-      width: 100%;
-      text-align: center;
-    }
-    input, textarea, button {
-      width: 100%;
-      margin-top: 10px;
-      padding: 10px;
-      font-size: 1rem;
-      border: 1px solid #ddd;
-      border-radius: 8px;
-    }
-    button {
-      background: #6c63ff;
-      color: white;
-      border: none;
-      cursor: pointer;
-      transition: 0.3s;
-    }
-    button:hover {
-      background: #5750d3;
-    }
-  </style>
 </head>
 <body>
-  <div class="container">
-    <h2>ส่งข้อความถึง MindMellow 💌</h2>
-    <form id="messageForm">
-      <input type="text" id="name" placeholder="ชื่อของคุณ" required>
-      <textarea id="message" rows="4" placeholder="ข้อความ..." required></textarea>
-      <button type="submit">ส่งข้อความ</button>
-    </form>
-  </div>
 
-  <!-- 👇 ใส่โค้ด JavaScript ตรงนี้ -->
-  <script>
-    const form = document.getElementById('messageForm');
-    const submitBtn = form.querySelector('button[type="submit"]');
-    const statusEl = document.createElement('div');
-    statusEl.style.marginTop = '12px';
-    statusEl.style.textAlign = 'center';
-    form.appendChild(statusEl);
+  <h2>ฝากข้อความหาเรา</h2>
+  <form id="messageForm">
+    <input type="text" id="name" placeholder="ชื่อของคุณ" required><br>
+    <textarea id="message" placeholder="ข้อความ..." required></textarea><br>
+    <button type="submit">ส่งข้อความ</button>
+  </form>
 
-    // 🔗 วาง URL ที่ได้จาก Deploy Apps Script ตรงนี้
-    const scriptURL = '<<https://script.google.com/macros/s/AKfycbw6TCeQMha5w4N64X5cWL4z90JzeXm8F1tSC-Jgb6bFGzrJuBKkFlXkFvXyxBQnbdMB/exec>>';
+  <div id="status"></div>
 
-    form.addEventListener('submit', async e => {
-      e.preventDefault();
-      submitBtn.disabled = true;
-      submitBtn.textContent = 'กำลังส่ง...';
-      statusEl.textContent = '';
+<script>
+const form = document.getElementById('messageForm');
+const statusEl = document.getElementById('status');
 
-      const data = {
-        name: document.getElementById('name').value.trim(),
-        message: document.getElementById('message').value.trim()
-      };
+// <<< แก้ตรงนี้เป็น URL ของ Apps Script >>>
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycby1U67Fh8Up3sayG8xb_NdHPhNNXh-yuxaZdj0QuZdPTV6ISvKzrUe7epE1gpiJUBhf/exec";
 
-      try {
-        const response = await fetch(scriptURL, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(data)
-        });
+form.addEventListener('submit', async (e) => {
+  e.preventDefault();
 
-        const text = await response.text();
-        console.log("Server raw response:", text); // 👈 debug
-        let json = null;
-        try {
-          json = text ? JSON.parse(text) : null;
-        } catch {
-          throw new Error('เซิร์ฟเวอร์ไม่ได้ส่ง JSON กลับมา');
-        }
+  const data = {
+    name: document.getElementById('name').value.trim(),
+    message: document.getElementById('message').value.trim()
+  };
 
-        if (json && json.result === 'success') {
-          statusEl.style.color = 'green';
-          statusEl.textContent = 'ส่งข้อความสำเร็จ ✅';
-          form.reset();
-        } else {
-          statusEl.style.color = 'red';
-          statusEl.textContent = 'ส่งไม่สำเร็จ ❌';
-        }
-      } catch (err) {
-        statusEl.style.color = 'red';
-        statusEl.textContent = 'มีปัญหา: ' + err;
-      } finally {
-        submitBtn.disabled = false;
-        submitBtn.textContent = 'ส่งข้อความ';
-      }
+  try {
+    const res = await fetch(SCRIPT_URL, {
+      method: "POST",
+      mode: "no-cors", // ใช้ no-cors กัน error CORS
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(data)
     });
-  </script>
+
+    // จะไม่สามารถอ่าน response ได้ถ้าใช้ no-cors
+    statusEl.innerText = "✅ ส่งข้อความแล้ว!";
+    form.reset();
+
+  } catch (err) {
+    statusEl.innerText = "❌ มีปัญหา: " + err.message;
+  }
+});
+</script>
+
 </body>
 </html>
