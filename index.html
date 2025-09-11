@@ -273,7 +273,7 @@ header img {
 }
 </style>
 
- <h2 style="color:white; margin-top:40px;">ข้อความล่าสุด 📩</h2>
+ <h2>ข้อความล่าสุด 📩</h2>
 
 <div id="messages-box">
   <div id="messages"></div>
@@ -558,8 +558,8 @@ async function loadMessages() {
     const messagesDiv = document.getElementById("messages");
     messagesDiv.innerHTML = "";
 
-    // เอาข้อความล่าสุดขึ้นก่อน
-    data.reverse().forEach(row => {
+    // เอาข้อความล่าสุด 5 อัน
+    data.reverse().slice(0, 5).forEach(row => {
       const div = document.createElement("div");
       div.innerHTML = `<strong>${row.name}</strong>: ${row.message}`;
       messagesDiv.appendChild(div);
