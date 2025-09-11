@@ -4,6 +4,121 @@
   <meta charset="UTF-8">
   <title>Mind Mellow</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <style>
+    * {margin:0; padding:0; box-sizing:border-box;}
+    body {
+      font-family: 'Kanit', sans-serif;
+      min-height:100vh;
+      background: linear-gradient(to bottom, #8B0000, #000000);
+      color:white;
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      padding:20px;
+    }
+
+    h2 { margin-bottom:10px; }
+
+    form {
+      background:rgba(255,255,255,0.95);
+      color:#000;
+      padding:20px;
+      border-radius:12px;
+      width:90%;
+      max-width:400px;
+      box-shadow:0 8px 20px rgba(0,0,0,0.4);
+      margin-bottom:20px;
+    }
+    input, textarea {
+      width:100%; padding:10px;
+      margin:8px 0;
+      border:2px solid #ff4d4d;
+      border-radius:10px;
+      font-family:'Kanit', sans-serif;
+    }
+    button {
+      background:#b30000;
+      color:#fff;
+      border:none;
+      border-radius:10px;
+      padding:12px;
+      width:100%;
+      font-size:1.1em;
+      cursor:pointer;
+    }
+    button:hover { background:#800000; }
+    #status { margin-top:8px; }
+
+    /* ===== GAME STYLE ===== */
+    .game-velvet {
+      position: relative;
+      width: 100%;
+      max-width:400px;
+      height: 380px;
+      margin: 20px auto;
+      border-radius: 16px;
+      background: linear-gradient(160deg, #24090e 0%, #4a0f18 40%, #0f0f12 100%);
+      box-shadow: 0 8px 24px rgba(0,0,0,0.5);
+      overflow: hidden;
+    }
+    .fs-exit-btn {
+      position: absolute; top:10px; right:10px;
+      background:#ff4757; color:#fff;
+      border:none; border-radius:8px;
+      padding:6px 10px;
+      font-weight:bold; cursor:pointer;
+      z-index:1000;
+    }
+    #score, #timer {
+      position: absolute; bottom:10px;
+      font-size:1.4em; font-weight:bold;
+      text-shadow:0 0 6px rgba(0,0,0,0.7);
+    }
+    #score { left:15px; }
+    #timer { right:15px; color:#ff4444; }
+
+    .emoji-item {
+      position:absolute;
+      font-size:5em;
+      cursor:pointer;
+      transition:transform 0.1s,opacity 0.1s;
+    }
+    .floating-points {
+      position:absolute;
+      font-size:1.2em;
+      font-weight:bold;
+      animation: floatUp 1s ease-out forwards;
+      z-index:200;
+    }
+    @keyframes floatUp {
+      from { transform: translateY(0); opacity:1; }
+      to { transform: translateY(-40px); opacity:0; }
+    }
+    .end-modal {
+      position:absolute; inset:0; z-index:200;
+      display:none; align-items:center; justify-content:center;
+      background:rgba(0,0,0,0.55);
+    }
+    .end-card {
+      background:#1b1114;
+      border-radius:16px;
+      padding:20px;
+      text-align:center;
+      color:white;
+      font-size:1.2em;
+    }
+    .end-actions button {
+      margin:5px;
+      padding:8px 14px;
+      border:none;
+      border-radius:8px;
+      background:#e63946;
+      color:white;
+      cursor:pointer;
+    }
+    .end-actions button.secondary { background:#555; }
+  </style>
 </head>
 <body>
 
@@ -13,15 +128,14 @@
     <textarea id="message" placeholder="ข้อความ..." required></textarea><br>
     <button type="submit">ส่งข้อความ</button>
   </form>
-
   <div id="status"></div>
 
-<script>
+  <script>
 const form = document.getElementById('messageForm');
 const statusEl = document.getElementById('status');
 
 // <<< แก้ตรงนี้เป็น URL ของ Apps Script >>>
-const SCRIPT_URL = "https://script.google.com/macros/s/AKfycby1U67Fh8Up3sayG8xb_NdHPhNNXh-yuxaZdj0QuZdPTV6ISvKzrUe7epE1gpiJUBhf/exec";
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbybCDItwnafd2SA1RlSKy3AxpI3UazLwTrXzPe0qj7yeMS17DuzFbqJj1QtCNUDh9Im/exec";
 
 form.addEventListener('submit', async (e) => {
   e.preventDefault();
@@ -47,6 +161,131 @@ form.addEventListener('submit', async (e) => {
     statusEl.innerText = "❌ มีปัญหา: " + err.message;
   }
 });
+</script>
+
+  <!-- ปุ่มเล่นเกม -->
+  <div style="margin-top:20px; text-align:center;">
+    <button onclick="startGame()">🎮 เล่นเกม Emoji Rush</button>
+    <div style="margin-top:10px; font-size:0.9em; color:#fff;">
+      📖 กติกา:<br>
+      ❤️=+5 | 🍺=+10 | 🎶=+15 | 🖤=-10 | 💣=-20
+    </div>
+  </div>
+
+  <!-- พื้นที่เกม -->
+  <div id="game-section" style="display:none;">
+    <div id="game-area" class="game-velvet">
+      <button class="fs-exit-btn" onclick="exitFullscreen()">✕</button>
+      <div id="score">คะแนน: 0</div>
+      <div id="timer">เวลา: 20</div>
+      <div id="end-modal" class="end-modal">
+        <div class="end-card">
+          <h3>หมดเวลา!</h3>
+          <p id="final-score"></p>
+          <div class="end-actions">
+            <button onclick="startGame()">เล่นอีกครั้ง</button>
+            <button class="secondary" onclick="exitFullscreen()">ปิด</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+<script>
+const form=document.getElementById("messageForm");
+const statusEl=document.getElementById("status");
+
+// URL ของ Apps Script (ไม่เปลี่ยนขั้นตอนการส่งข้อความ)
+const SCRIPT_URL="https://script.google.com/macros/s/AKfycbybCDItwnafd2SA1RlSKy3AxpI3UazLwTrXzPe0qj7yeMS17DuzFbqJj1QtCNUDh9Im/exec";
+
+form.addEventListener("submit",async e=>{
+  e.preventDefault();
+  const data={name:document.getElementById("name").value.trim(),
+              message:document.getElementById("message").value.trim()};
+  try{
+    await fetch(SCRIPT_URL,{
+      method:"POST",
+      mode:"no-cors",
+      headers:{"Content-Type":"application/json"},
+      body:JSON.stringify(data)
+    });
+    statusEl.innerText="✅ ส่งข้อความแล้ว!";
+    form.reset();
+  }catch(err){ statusEl.innerText="❌ มีปัญหา: "+err.message; }
+});
+
+// ===== GAME =====
+(()=>{
+  const EMOJIS=[{icon:"❤️",points:5},{icon:"🍺",points:10},{icon:"🎶",points:15},{icon:"🖤",points:-10},{icon:"💣",points:-20}];
+  const GAME_DURATION=20; let SPAWN_INTERVAL=1000,LIFETIME_MS=2000;
+  let score=0,gameTime=GAME_DURATION,spawnTimer,timerInterval,running=false;
+  const randInt=(min,max)=>Math.floor(min+Math.random()*(max-min+1));
+
+  window.startGame=function(){
+    const sec=document.getElementById("game-section");
+    const area=document.getElementById("game-area");
+    const modal=document.getElementById("end-modal");
+    sec.style.display="block"; modal.style.display="none";
+
+    if(sec.requestFullscreen){sec.requestFullscreen().catch(()=>{document.body.classList.add("fs-open");});}
+    else{document.body.classList.add("fs-open");}
+    if(area) area.style.height="100vh";
+
+    score=0;gameTime=GAME_DURATION;
+    document.getElementById("score").textContent="คะแนน: 0";
+    document.getElementById("timer").textContent="เวลา: "+gameTime;
+
+    running=true;
+    spawnTimer=setInterval(spawnEmoji,SPAWN_INTERVAL);
+    timerInterval=setInterval(()=>{
+      gameTime--;
+      document.getElementById("timer").textContent="เวลา: "+gameTime;
+      if(gameTime<=0) endGame();
+    },1000);
+  };
+
+  function spawnEmoji(){
+    if(!running) return;
+    const area=document.getElementById("game-area");
+    const W=area.clientWidth,H=area.clientHeight;
+    const count=randInt(1,2);
+    for(let i=0;i<count;i++){
+      const {icon,points}=EMOJIS[Math.floor(Math.random()*EMOJIS.length)];
+      const el=document.createElement("div");
+      el.textContent=icon;el.className="emoji-item";
+      el.style.left=randInt(40,W-80)+"px";
+      el.style.top=randInt(40,H-80)+"px";
+      el.addEventListener("pointerdown",()=>{
+        score+=points;
+        document.getElementById("score").textContent="คะแนน: "+score;
+        const float=document.createElement("div");
+        float.className="floating-points";
+        float.textContent=(points>0?"+":"")+points;
+        float.style.left=el.style.left;float.style.top=el.style.top;
+        float.style.color=points>0?"lime":"red";
+        area.appendChild(float);
+        setTimeout(()=>float.remove(),1000);
+        el.remove();
+      },{passive:true});
+      area.appendChild(el);
+      setTimeout(()=>{if(el.parentNode)el.remove();},LIFETIME_MS);
+    }
+  }
+
+  function endGame(){
+    running=false;clearInterval(spawnTimer);clearInterval(timerInterval);
+    const modal=document.getElementById("end-modal");
+    modal.style.display="flex";
+    document.getElementById("final-score").textContent="คุณได้คะแนน "+score+" แต้ม";
+  }
+
+  window.exitFullscreen=()=>{
+    running=false;
+    if(document.fullscreenElement) document.exitFullscreen();
+    document.body.classList.remove("fs-open");
+    document.getElementById("game-section").style.display="none";
+  };
+})();
 </script>
 
 </body>
