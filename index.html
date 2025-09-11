@@ -516,35 +516,32 @@ function playTruthOrDare() {
 
 <script>
 function startRace() {
-  document.getElementById("race-result").innerHTML =
-    `<span style="color:black;">🏁 การแข่งเริ่มแล้ว!</span>`;
-
-  const trackWidth = document.getElementById("race-track").offsetWidth;
+  document.getElementById("race-result").innerHTML = `<span style="color:black;">🏁 การแข่งเริ่มแล้ว!</span>`;
   const racers = document.querySelectorAll(".racer");
   let finished = false;
 
   racers.forEach(racer => {
-    let pos = 0; // ระยะที่วิ่งจากขวา
-    const baseSpeed = Math.random() * 0.1 + 0.1; // ★ วิ่งช้าลง + สูสี
-    let extraBoost = false; // ใช้กันเร่งสปีดครั้งเดียว
+    let pos = 0;
+    let speed = Math.random() * 0.2 + 0.1; // ความเร็วพื้นฐาน (ค่อนข้างสูสี)
+    let boostsLeft = 4; // ★ บูสต์ได้ 2 ครั้งสูงสุด
 
     function move() {
       if (finished) return;
 
-      // ตรวจว่าถึงช่วงท้าย (ใกล้เส้นชัยแล้ว)
-      const remaining = trackWidth - pos - 60;
-      let speed = baseSpeed;
+      const trackWidth = document.getElementById("race-track").offsetWidth;
 
-      if (remaining < 200 && !extraBoost) {
-        // ★ มีโอกาสสุ่มเร่งสปีด
-        if (Math.random() < 0.5) { 
-          speed += Math.random() * 2 + 1; // เร่งสปีด
-          extraBoost = true; 
+      // เดินปกติ
+      pos += speed;
+
+      // ★ เริ่มมีสิทธิ์บูสต์ตั้งแต่ครึ่งสนาม
+      if (pos > trackWidth / 2 && boostsLeft > 0) {
+        if (Math.random() < 0.10) { // โอกาสบูสต์ 5% ต่อเฟรม
+          speed += Math.random() * 1 + 1; // เพิ่มสปีดสุ่ม
+          boostsLeft--;
         }
       }
 
-      pos += speed;
-      racer.style.right = pos + "px"; // ขยับจากขวาไปซ้าย
+      racer.style.right = pos + "px";
 
       // ชนเส้นชัย
       if (pos >= trackWidth - 40) {
@@ -560,6 +557,7 @@ function startRace() {
   });
 }
 </script>
+
 
 
   
