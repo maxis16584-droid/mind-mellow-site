@@ -517,29 +517,29 @@ function playTruthOrDare() {
 
 
 <script>
+// ฟังก์ชันโหลดข้อความจาก Apps Script
 async function loadMessages() {
   try {
-    const res = await fetch(MESSAGES_URL);
+    const res = await fetch("https://script.google.com/macros/s/AKfycby8yevwis88viXTeAUPLZhAwHH2J-P3gnbCpbeBSD1jBc4QPn08SiMf2PSap51-yHm9/exec");
     const data = await res.json();
 
-    // data จะเป็น array [[ชื่อ, ข้อความ], ...]
-    let html = "";
-    data.forEach(row => {
-      html += `<p><b>${row[0]}</b>: ${row[1]}</p>`;
-    });
-
-    document.getElementById("live-messages").innerHTML = html;
+    if (data && data.length > 0) {
+      // เอาเฉพาะข้อความล่าสุด (อันบนสุดในชีท)
+      const lastMsg = data[data.length - 1];
+      document.getElementById("live-messages").innerText = `${lastMsg.name}: ${lastMsg.message}`;
+    }
   } catch (err) {
-    document.getElementById("live-messages").innerHTML = "⚠️ โหลดข้อความไม่สำเร็จ";
+    console.error("โหลดข้อความไม่สำเร็จ", err);
   }
 }
 
 // โหลดครั้งแรก
 loadMessages();
 
-// รีเฟรชทุก 10 วิ
-setInterval(loadMessages, 10000);
-</script>  
+// โหลดซ้ำทุกๆ 5 วินาที
+setInterval(loadMessages, 5000);
+</script>
+
   
 
 </body>
