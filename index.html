@@ -227,6 +227,23 @@ header img {
   margin: 0 auto;     /* จัดให้อยู่ตรงกลาง */
 }
 
+#live-messages {
+  position: relative;
+  text-align: center;
+  font-size: 1.4em;
+  font-weight: bold;
+  color: white;                 /* สีตัวอักษร */
+  text-shadow: 1px 1px 4px black; /* เงาของข้อความ */
+  margin: 20px auto;
+  max-width: 80%;
+  line-height: 1.5em;
+
+  background: rgba(0,0,0,0.8);  /* พื้นหลังสีดำโปร่ง */
+  padding: 15px 20px;           /* เว้นระยะในกล่อง */
+  border-radius: 12px;          /* มุมโค้ง */
+  box-shadow: 0 6px 18px rgba(0,0,0,0.5); /* เงากล่อง */
+}
+  
 </style>
 </head>
 <body>
@@ -256,6 +273,8 @@ header img {
 }
 </style>
 
+ <div id="live-messages"></div>
+  
   <div class="tip-section">
     <span class="tip-heart">❤️</span>
     <h2>สนับสนุนเรา</h2>
@@ -280,24 +299,6 @@ header img {
   <button onclick="playTruthOrDare()">🎲 Truth or Dare</button>
   <div id="truth-dare-result" style="margin-top:20px; font-size:1.4em; color:black; font-weight:bold;"></div>
 </div>
-
-     <div style="margin-top:30px;">
-  <button onclick="startRace()">🏁 เริ่มเกม Emoji Race</button>
-</div>
-  </div>
-
-<!-- Track -->
-<div id="race-track" style="width:90%; max-width:500px; height:200px; margin:20px auto; border:3px solid #fff; border-radius:12px; position:relative; background:#111; overflow:hidden;">
-  <div id="finish-line" style="position:absolute; top:0; left:10px; width:4px; height:100%; background:red;"></div>
-
-  <!-- Emoji นักแข่ง (เริ่มจากขวา) -->
-  <div class="racer" id="racer1" style="position:absolute; top:20px; right:0; font-size:2em;">🐢</div>
-  <div class="racer" id="racer2" style="position:absolute; top:70px; right:0; font-size:2em;">🐇</div>
-  <div class="racer" id="racer3" style="position:absolute; top:120px; right:0; font-size:2em;">🐓</div>
-</div>
-
-<p id="race-result" style="text-align:center; font-size:1.3em; margin-top:10px;"></p>
-
   
   <!-- กล่องเกม -->
   <div id="game-section" style="display:none;">
@@ -327,7 +328,7 @@ const form = document.getElementById('messageForm');
 const statusEl = document.getElementById('status');
 
 // <<< URL ของ Apps Script >>>
-const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbybCDItwnafd2SA1RlSKy3AxpI3UazLwTrXzPe0qj7yeMS17DuzFbqJj1QtCNUDh9Im/exec";
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycby8yevwis88viXTeAUPLZhAwHH2J-P3gnbCpbeBSD1jBc4QPn08SiMf2PSap51-yHm9/exec";
 
 form.addEventListener('submit', async (e) => {
   e.preventDefault();
@@ -514,52 +515,31 @@ function playTruthOrDare() {
 }
 </script>
 
+
 <script>
-function startRace() {
-  document.getElementById("race-result").innerHTML = `<span style="color:black;">🏁 การแข่งเริ่มแล้ว!</span>`;
-  const racers = document.querySelectorAll(".racer");
-  let finished = false;
+async function loadMessages() {
+  try {
+    const res = await fetch(MESSAGES_URL);
+    const data = await res.json();
 
-  racers.forEach(racer => {
-    let pos = 0;
-    let speed = Math.random() * 0.2 + 0.1; // ความเร็วพื้นฐาน (ค่อนข้างสูสี)
-    let boostsLeft = 4; // ★ บูสต์ได้ 2 ครั้งสูงสุด
+    // data จะเป็น array [[ชื่อ, ข้อความ], ...]
+    let html = "";
+    data.forEach(row => {
+      html += `<p><b>${row[0]}</b>: ${row[1]}</p>`;
+    });
 
-    function move() {
-      if (finished) return;
-
-      const trackWidth = document.getElementById("race-track").offsetWidth;
-
-      // เดินปกติ
-      pos += speed;
-
-      // ★ เริ่มมีสิทธิ์บูสต์ตั้งแต่ครึ่งสนาม
-      if (pos > trackWidth / 2 && boostsLeft > 0) {
-        if (Math.random() < 0.10) { // โอกาสบูสต์ 5% ต่อเฟรม
-          speed += Math.random() * 1 + 1; // เพิ่มสปีดสุ่ม
-          boostsLeft--;
-        }
-      }
-
-      racer.style.right = pos + "px";
-
-      // ชนเส้นชัย
-      if (pos >= trackWidth - 40) {
-        finished = true;
-        document.getElementById("race-result").innerHTML =
-          `<span style="color:black;">🥇 ผู้ชนะคือ ${racer.textContent}</span>`;
-      } else {
-        requestAnimationFrame(move);
-      }
-    }
-
-    move();
-  });
+    document.getElementById("live-messages").innerHTML = html;
+  } catch (err) {
+    document.getElementById("live-messages").innerHTML = "⚠️ โหลดข้อความไม่สำเร็จ";
+  }
 }
-</script>
 
+// โหลดครั้งแรก
+loadMessages();
 
-
+// รีเฟรชทุก 10 วิ
+setInterval(loadMessages, 10000);
+</script>  
   
 
 </body>
