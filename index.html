@@ -1,127 +1,236 @@
 <!DOCTYPE html>
 <html lang="th">
 <head>
-  <meta charset="UTF-8">
-  <title>Mind Mellow</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>สนับสนุน Mind Mellow</title>
 
-  <style>
-    * {margin:0; padding:0; box-sizing:border-box;}
-    body {
-      font-family: 'Kanit', sans-serif;
-      min-height:100vh;
-      background: linear-gradient(to bottom, #8B0000, #000000);
-      color:white;
-      display:flex;
-      flex-direction:column;
-      align-items:center;
-      padding:20px;
-    }
+<link href="https://fonts.googleapis.com/css2?family=Kanit:wght@400;700&family=Prompt:wght@400;600&display=swap" rel="stylesheet">
 
-    h2 { margin-bottom:10px; }
+<style>
+* {margin:0; padding:0; box-sizing:border-box;}
+body {
+  font-family: 'Kanit', 'Prompt', sans-serif;
+  min-height:100vh;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  position:relative;
+  overflow-x:hidden;
+  color:white;
+  background: linear-gradient(to bottom, #8B0000, #000000);
+}
+.emoji-bg {
+  position:absolute;
+  top:0; left:0;
+  width:100%; height:100%;
+  pointer-events:none;
+  overflow:hidden;
+  z-index:0;
+}
+header {
+  width:100%;
+  text-align:center;
+  padding:30px 10px 10px 10px;
+  font-size:2em;
+  font-weight:700;
+  text-shadow:2px 2px 8px rgba(0,0,0,0.5);
+  position:relative;
+  z-index:1;
+}
+header small {
+  display:block;
+  font-size:0.65em;
+  font-weight:400;
+  margin-top:5px;
+}
+main {
+  position:relative;
+  width:90%;
+  max-width:500px;
+  background:rgba(255,255,255,0.95);
+  border-radius:25px;
+  padding:40px 30px 30px 30px;
+  margin-top:20px;
+  box-shadow:0 15px 30px rgba(0,0,0,0.4);
+  overflow:hidden;
+  z-index:1;
+}
+h2 {
+  text-align:center;
+  color:#b30000;
+  margin-bottom:20px;
+  font-weight:700;
+  font-size:1.5em;
+}
+input, textarea {
+  width:100%;
+  padding:14px;
+  margin:12px 0;
+  font-size:1em;
+  border:2px solid #ff4d4d;
+  border-radius:15px;
+  outline:none;
+  transition:0.3s;
+  font-family: 'Prompt', sans-serif;
+}
+input:focus, textarea:focus {
+  border-color:#800000;
+  box-shadow:0 0 12px rgba(128,0,0,0.4);
+}
+button {
+  background:#b30000;
+  color:white;
+  padding:15px;
+  border:none;
+  border-radius:15px;
+  width:100%;
+  font-size:1.2em;
+  cursor:pointer;
+  font-weight:600;
+  transition:0.3s;
+  box-shadow:0 6px 20px rgba(0,0,0,0.3);
+}
+button:hover {
+  background:#800000;
+  transform:translateY(-3px);
+  box-shadow:0 10px 25px rgba(0,0,0,0.5);
+}
+.tip-section {
+  text-align:center;
+  margin-top:30px;
+  position:relative;
+}
+.tip-heart {
+  font-size:3em;
+  margin-bottom:20px;
+  display:block;
+}
+.tip-section h2 {
+  margin-bottom:10px;
+}
+.tip-section p {
+  color:black;
+  font-weight:600;
+  margin-bottom:15px;
+}
+.tip-section img {
+  width:240px; height:240px; 
+  border-radius:25px;
+  border:6px solid #b30000; 
+  box-shadow:0 10px 30px rgba(0,0,0,0.4);
+}
+footer {
+  margin:25px 0;
+  font-size:1em;
+  color:#800000;
+  text-align:center;
+  text-shadow:1px 1px 3px rgba(0,0,0,0.3);
+}
 
-    form {
-      background:rgba(255,255,255,0.95);
-      color:#000;
-      padding:20px;
-      border-radius:12px;
-      width:90%;
-      max-width:400px;
-      box-shadow:0 8px 20px rgba(0,0,0,0.4);
-      margin-bottom:20px;
-    }
-    input, textarea {
-      width:100%; padding:10px;
-      margin:8px 0;
-      border:2px solid #ff4d4d;
-      border-radius:10px;
-      font-family:'Kanit', sans-serif;
-    }
-    button {
-      background:#b30000;
-      color:#fff;
-      border:none;
-      border-radius:10px;
-      padding:12px;
-      width:100%;
-      font-size:1.1em;
-      cursor:pointer;
-    }
-    button:hover { background:#800000; }
-    #status { margin-top:8px; }
-
-    /* ===== GAME STYLE ===== */
-    .game-velvet {
-      position: relative;
-      width: 100%;
-      max-width:400px;
-      height: 380px;
-      margin: 20px auto;
-      border-radius: 16px;
-      background: linear-gradient(160deg, #24090e 0%, #4a0f18 40%, #0f0f12 100%);
-      box-shadow: 0 8px 24px rgba(0,0,0,0.5);
-      overflow: hidden;
-    }
-    .fs-exit-btn {
-      position: absolute; top:10px; right:10px;
-      background:#ff4757; color:#fff;
-      border:none; border-radius:8px;
-      padding:6px 10px;
-      font-weight:bold; cursor:pointer;
-      z-index:1000;
-    }
-    #score, #timer {
-      position: absolute; bottom:10px;
-      font-size:1.4em; font-weight:bold;
-      text-shadow:0 0 6px rgba(0,0,0,0.7);
-    }
-    #score { left:15px; }
-    #timer { right:15px; color:#ff4444; }
-
-    .emoji-item {
-      position:absolute;
-      font-size:5em;
-      cursor:pointer;
-      transition:transform 0.1s,opacity 0.1s;
-    }
-    .floating-points {
-      position:absolute;
-      font-size:1.2em;
-      font-weight:bold;
-      animation: floatUp 1s ease-out forwards;
-      z-index:200;
-    }
-    @keyframes floatUp {
-      from { transform: translateY(0); opacity:1; }
-      to { transform: translateY(-40px); opacity:0; }
-    }
-    .end-modal {
-      position:absolute; inset:0; z-index:200;
-      display:none; align-items:center; justify-content:center;
-      background:rgba(0,0,0,0.55);
-    }
-    .end-card {
-      background:#1b1114;
-      border-radius:16px;
-      padding:20px;
-      text-align:center;
-      color:white;
-      font-size:1.2em;
-    }
-    .end-actions button {
-      margin:5px;
-      padding:8px 14px;
-      border:none;
-      border-radius:8px;
-      background:#e63946;
-      color:white;
-      cursor:pointer;
-    }
-    .end-actions button.secondary { background:#555; }
-  </style>
+/* ================= GAME ================= */
+.game-velvet {
+  position: relative;
+  width: 100%;
+  height: 380px;
+  margin: 20px auto;
+  border-radius: 16px;
+  background: linear-gradient(160deg, #24090e 0%, #4a0f18 40%, #0f0f12 100%);
+  box-shadow: 0 8px 24px rgba(0,0,0,0.5);
+  overflow: hidden;
+}
+.fs-exit-btn {
+  position: absolute;
+  top: 10px; right: 10px;
+  background: #ff4757;
+  color: #fff;
+  border: none;
+  border-radius: 12px;
+  padding: 8px 12px;
+  font-weight: bold;
+  cursor: pointer;
+  z-index: 1000;
+}
+#score, #timer {
+  position: absolute;
+  bottom: 10px;
+  font-size: 1.6em;
+  font-weight: bold;
+  text-shadow: 2px 2px 6px rgba(0,0,0,0.7);
+  z-index: 100;
+}
+#score { left: 15px; color: #fff; }
+#timer { right: 15px; color: #ff4444; }
+.emoji-item {
+  position: absolute;
+  font-size: 6em;
+  cursor: pointer;
+  transition: transform 0.1s, opacity 0.1s;
+}
+.floating-points {
+  position: absolute;
+  font-size: 1.4em;
+  font-weight: bold;
+  opacity: 1;
+  animation: floatUp 1s ease-out forwards;
+  z-index: 200;
+}
+@keyframes floatUp {
+  from { transform: translateY(0); opacity: 1; }
+  to { transform: translateY(-40px); opacity: 0; }
+}
+.end-modal {
+  position: absolute; inset: 0; z-index: 200;
+  display: none; align-items: center; justify-content: center;
+  background: rgba(0,0,0,0.55);
+}
+.end-card {
+  background: #1b1114;
+  border-radius: 20px;
+  padding: 24px 28px;
+  text-align: center;
+  color: #fff;
+  font-size: 1.3em;
+  box-shadow: 0 10px 40px rgba(0,0,0,.6);
+  min-width: 280px;
+}
+.end-card h3 {
+  font-size: 1.6em;
+  margin-bottom: 12px;
+  color: #fff;
+}
+.end-card p {
+  font-size: 1.2em;
+  margin-bottom: 20px;
+  color: #fff;
+}
+.end-actions button {
+  padding: 12px 18px;
+  font-size: 1.1em;
+}
+.fs-open { overflow: hidden; }
+.fs-open #game-section {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  display: block !important;
+  padding: 8px;
+  background: rgba(0,0,0,0.5);
+}
+.fs-open #game-area {
+  height: calc(100vh - 16px) !important;
+}
+</style>
 </head>
 <body>
 
+<div class="emoji-bg" id="emojiContainer"></div>
+
+<header>Mind Mellow
+  <small>SBD bar Bangpakong ทุกวันเสาร์ 21:00-22:00 / 22:30-23:30</small>
+</header>
+
+<main>
   <h2>ฝากข้อความหาเรา</h2>
   <form id="messageForm">
     <input type="text" id="name" placeholder="ชื่อของคุณ" required><br>
@@ -130,49 +239,27 @@
   </form>
   <div id="status"></div>
 
-  <script>
-const form = document.getElementById('messageForm');
-const statusEl = document.getElementById('status');
+  <div class="tip-section">
+    <span class="tip-heart">❤️</span>
+    <h2>สนับสนุนเรา</h2>
+    <p>สแกน QR พร้อมเพย์เพื่อส่งทิป</p>
+    <img src="qrcode.png" alt="QR Code พร้อมเพย์"> 
+  </div>
 
-// <<< แก้ตรงนี้เป็น URL ของ Apps Script >>>
-const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbybCDItwnafd2SA1RlSKy3AxpI3UazLwTrXzPe0qj7yeMS17DuzFbqJj1QtCNUDh9Im/exec";
-
-form.addEventListener('submit', async (e) => {
-  e.preventDefault();
-
-  const data = {
-    name: document.getElementById('name').value.trim(),
-    message: document.getElementById('message').value.trim()
-  };
-
-  try {
-    const res = await fetch(SCRIPT_URL, {
-      method: "POST",
-      mode: "no-cors", // ใช้ no-cors กัน error CORS
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(data)
-    });
-
-    // จะไม่สามารถอ่าน response ได้ถ้าใช้ no-cors
-    statusEl.innerText = "✅ ส่งข้อความแล้ว!";
-    form.reset();
-
-  } catch (err) {
-    statusEl.innerText = "❌ มีปัญหา: " + err.message;
-  }
-});
-</script>
-
-  <!-- ปุ่มเล่นเกม -->
-  <div style="margin-top:20px; text-align:center;">
+  <!-- ปุ่มกดเล่น -->
+  <div style="margin-top:20px;">
     <button onclick="startGame()">🎮 เล่นเกม Emoji Rush</button>
-    <div style="margin-top:10px; font-size:0.9em; color:#fff;">
-      📖 กติกา:<br>
-      ❤️=+5 | 🍺=+10 | 🎶=+15 | 🖤=-10 | 💣=-20
+    <div style="margin-top:15px; color:white; font-size:0.95em; line-height:1.6;">
+      <p>📖 กติกา:</p>
+      <p>❤️ = +5 แต้ม</p>
+      <p>🍺 = +10 แต้ม</p>
+      <p>🎶 = +15 แต้ม</p>
+      <p>🖤 = -10 แต้ม</p>
+      <p>💣 = -20 แต้ม</p>
     </div>
   </div>
 
-  <!-- พื้นที่เกม -->
+  <!-- กล่องเกม -->
   <div id="game-section" style="display:none;">
     <div id="game-area" class="game-velvet">
       <button class="fs-exit-btn" onclick="exitFullscreen()">✕</button>
@@ -184,96 +271,152 @@ form.addEventListener('submit', async (e) => {
           <p id="final-score"></p>
           <div class="end-actions">
             <button onclick="startGame()">เล่นอีกครั้ง</button>
-            <button class="secondary" onclick="exitFullscreen()">ปิด</button>
+            <button onclick="exitFullscreen()">ปิด</button>
           </div>
         </div>
       </div>
     </div>
   </div>
+</main>
+
+<footer>ขอบคุณที่สนับสนุนเรา 🎵</footer>
+
+<!-- ============ Scripts ============ -->
+<script>
+const form = document.getElementById('messageForm');
+const statusEl = document.getElementById('status');
+
+// <<< URL ของ Apps Script >>>
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbybCDItwnafd2SA1RlSKy3AxpI3UazLwTrXzPe0qj7yeMS17DuzFbqJj1QtCNUDh9Im/exec";
+
+form.addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const data = {
+    name: document.getElementById('name').value.trim(),
+    message: document.getElementById('message').value.trim()
+  };
+  try {
+    await fetch(SCRIPT_URL, {
+      method: "POST",
+      mode: "no-cors",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(data)
+    });
+    statusEl.innerText = "✅ ส่งข้อความแล้ว!";
+    form.reset();
+  } catch (err) {
+    statusEl.innerText = "❌ มีปัญหา: " + err.message;
+  }
+});
+</script>
 
 <script>
-const form=document.getElementById("messageForm");
-const statusEl=document.getElementById("status");
+// Floating emoji background
+const emojis = ["🍺","🍻","🖤","❤️"];
+const container = document.getElementById('emojiContainer');
+const numEmojis = 150;
+let emojiElements = [];
+for(let i=0;i<numEmojis;i++){
+  const span = document.createElement('div');
+  span.textContent = emojis[Math.floor(Math.random()*emojis.length)];
+  span.style.position = 'absolute';
+  span.style.left = Math.random()*100 + 'vw';
+  span.style.top = Math.random()*100 + 'vh';
+  span.style.fontSize = (20+Math.random()*30)+'px';
+  span.style.opacity = 0.2 + Math.random()*0.5;
+  container.appendChild(span);
+  emojiElements.push({ el: span, dx: (Math.random()-0.5)*0.2, dy: (Math.random()-0.5)*0.2 });
+}
+function animate() {
+  emojiElements.forEach(obj=>{
+    let x = parseFloat(obj.el.style.left);
+    let y = parseFloat(obj.el.style.top);
+    x += obj.dx; y += obj.dy;
+    if(x<0) x=100; if(x>100) x=0;
+    if(y<0) y=100; if(y>100) y=0;
+    obj.el.style.left = x + 'vw';
+    obj.el.style.top = y + 'vh';
+  });
+  requestAnimationFrame(animate);
+}
+animate();
+</script>
 
-// URL ของ Apps Script (ไม่เปลี่ยนขั้นตอนการส่งข้อความ)
-const SCRIPT_URL="https://script.google.com/macros/s/AKfycbybCDItwnafd2SA1RlSKy3AxpI3UazLwTrXzPe0qj7yeMS17DuzFbqJj1QtCNUDh9Im/exec";
+<script>
+(() => {
+  const EMOJIS = [
+    {icon:"❤️", points: 5},
+    {icon:"🍺", points:10},
+    {icon:"🎶", points:15},
+    {icon:"🖤", points:-10},
+    {icon:"💣", points:-20}
+  ];
+  const GAME_DURATION = 20;
+  let SPAWN_INTERVAL = 1000, LIFETIME_MS = 2000;
+  let score=0, gameTime=GAME_DURATION, spawnTimer, timerInterval, running=false;
+  const randInt = (min,max)=>Math.floor(min+Math.random()*(max-min+1));
 
-form.addEventListener("submit",async e=>{
-  e.preventDefault();
-  const data={name:document.getElementById("name").value.trim(),
-              message:document.getElementById("message").value.trim()};
-  try{
-    await fetch(SCRIPT_URL,{
-      method:"POST",
-      mode:"no-cors",
-      headers:{"Content-Type":"application/json"},
-      body:JSON.stringify(data)
-    });
-    statusEl.innerText="✅ ส่งข้อความแล้ว!";
-    form.reset();
-  }catch(err){ statusEl.innerText="❌ มีปัญหา: "+err.message; }
-});
+  window.startGame = function(){
+    const gameSec = document.getElementById('game-section');
+    const area    = document.getElementById('game-area');
+    const modal   = document.getElementById('end-modal');
 
-// ===== GAME =====
-(()=>{
-  const EMOJIS=[{icon:"❤️",points:5},{icon:"🍺",points:10},{icon:"🎶",points:15},{icon:"🖤",points:-10},{icon:"💣",points:-20}];
-  const GAME_DURATION=20; let SPAWN_INTERVAL=1000,LIFETIME_MS=2000;
-  let score=0,gameTime=GAME_DURATION,spawnTimer,timerInterval,running=false;
-  const randInt=(min,max)=>Math.floor(min+Math.random()*(max-min+1));
+    gameSec.style.display = "block";
+    modal.style.display = "none";
 
-  window.startGame=function(){
-    const sec=document.getElementById("game-section");
-    const area=document.getElementById("game-area");
-    const modal=document.getElementById("end-modal");
-    sec.style.display="block"; modal.style.display="none";
+    const goFallback = () => {
+      document.body.classList.add('fs-open');
+      if (area) area.style.height = '100vh';
+    };
+    if (gameSec.requestFullscreen) {
+      gameSec.requestFullscreen().then(()=>{ if (area) area.style.height = '100vh'; }).catch(goFallback);
+    } else { goFallback(); }
 
-    if(sec.requestFullscreen){sec.requestFullscreen().catch(()=>{document.body.classList.add("fs-open");});}
-    else{document.body.classList.add("fs-open");}
-    if(area) area.style.height="100vh";
+    score = 0; gameTime = GAME_DURATION;
+    document.getElementById('score').textContent = 'คะแนน: 0';
+    document.getElementById('timer').textContent = 'เวลา: ' + gameTime;
 
-    score=0;gameTime=GAME_DURATION;
-    document.getElementById("score").textContent="คะแนน: 0";
-    document.getElementById("timer").textContent="เวลา: "+gameTime;
-
-    running=true;
-    spawnTimer=setInterval(spawnEmoji,SPAWN_INTERVAL);
-    timerInterval=setInterval(()=>{
+    running = true;
+    spawnTimer = setInterval(spawnEmoji, SPAWN_INTERVAL);
+    timerInterval = setInterval(()=>{
       gameTime--;
-      document.getElementById("timer").textContent="เวลา: "+gameTime;
-      if(gameTime<=0) endGame();
-    },1000);
+      document.getElementById('timer').textContent = 'เวลา: ' + gameTime;
+      if (gameTime <= 0) endGame();
+    }, 1000);
   };
 
   function spawnEmoji(){
     if(!running) return;
-    const area=document.getElementById("game-area");
+    const area=document.getElementById('game-area');
     const W=area.clientWidth,H=area.clientHeight;
-    const count=randInt(1,2);
-    for(let i=0;i<count;i++){
+    const count = randInt(2,3);
+    for (let i=0;i<count;i++){
       const {icon,points}=EMOJIS[Math.floor(Math.random()*EMOJIS.length)];
       const el=document.createElement("div");
-      el.textContent=icon;el.className="emoji-item";
+      el.textContent=icon; el.className="emoji-item";
       el.style.left=randInt(40,W-80)+"px";
       el.style.top=randInt(40,H-80)+"px";
-      el.addEventListener("pointerdown",()=>{
+      const onHit=()=>{
         score+=points;
         document.getElementById("score").textContent="คะแนน: "+score;
         const float=document.createElement("div");
         float.className="floating-points";
         float.textContent=(points>0?"+":"")+points;
-        float.style.left=el.style.left;float.style.top=el.style.top;
+        float.style.left=el.style.left; 
+        float.style.top=el.style.top;
         float.style.color=points>0?"lime":"red";
         area.appendChild(float);
         setTimeout(()=>float.remove(),1000);
         el.remove();
-      },{passive:true});
+      };
+      el.addEventListener("pointerdown", onHit, {passive:true});
       area.appendChild(el);
-      setTimeout(()=>{if(el.parentNode)el.remove();},LIFETIME_MS);
+      setTimeout(()=>{if(el.parentNode)el.remove();},1800);
     }
   }
 
   function endGame(){
-    running=false;clearInterval(spawnTimer);clearInterval(timerInterval);
+    running=false; clearInterval(spawnTimer); clearInterval(timerInterval);
     const modal=document.getElementById("end-modal");
     modal.style.display="flex";
     document.getElementById("final-score").textContent="คุณได้คะแนน "+score+" แต้ม";
@@ -282,7 +425,7 @@ form.addEventListener("submit",async e=>{
   window.exitFullscreen=()=>{
     running=false;
     if(document.fullscreenElement) document.exitFullscreen();
-    document.body.classList.remove("fs-open");
+    document.body.classList.remove('fs-open');
     document.getElementById("game-section").style.display="none";
   };
 })();
