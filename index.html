@@ -516,25 +516,36 @@ function playTruthOrDare() {
 
 <script>
 function startRace() {
-  document.getElementById("race-result").innerHTML = `<span style="color:black;">🏁 การแข่งเริ่มแล้ว!</span>`;
+  document.getElementById("race-result").innerHTML = 
+    `<span style="color:black;">🏁 การแข่งเริ่มแล้ว!</span>`;
+
   const racers = document.querySelectorAll(".racer");
   let finished = false;
+  const trackWidth = document.getElementById("race-track").offsetWidth;
 
   racers.forEach(racer => {
-    let pos = 0; // ใช้เป็นค่า pixel ขยับจากขวา
-    const speed = Math.random() * 0.5 + 0.5; // ความเร็วสุ่ม
+    let pos = 0;
+    const racerWidth = racer.offsetWidth || 40;
+
+    // ★ ความเร็วพื้นฐานเท่ากัน (0.8)
+    let baseSpeed = 0.8;
 
     function move() {
       if (finished) return;
-      pos += speed; 
-      racer.style.right = pos + "px"; // ขยับจากขวาไปซ้าย
 
-      // เมื่อชนเส้นชัย (ด้านซ้าย)
-     if (pos >= document.getElementById("race-track").offsetWidth - 40) {
-  finished = true;
-  document.getElementById("race-result").innerHTML = 
-    `<span style="color:black;">🥇 ผู้ชนะคือ ${racer.textContent}</span>`;
-} else {
+      // ★ เพิ่มการเร่ง/ชะลอเล็กน้อยแบบสุ่ม
+      let variation = (Math.random() - 0.5) * 0.3; // -0.15 ถึง +0.15
+      let speed = baseSpeed + variation;
+
+      pos += speed;
+      racer.style.right = pos + "px";
+
+      // เช็คเส้นชัย
+      if (pos >= trackWidth - racerWidth) {
+        finished = true;
+        document.getElementById("race-result").innerHTML = 
+          `<span style="color:black; font-weight:bold;">🥇 ผู้ชนะคือ ${racer.textContent}</span>`;
+      } else {
         requestAnimationFrame(move);
       }
     }
@@ -542,6 +553,7 @@ function startRace() {
   });
 }
 </script>
+
   
 
 </body>
