@@ -288,12 +288,12 @@ header img {
 
 <!-- Track -->
 <div id="race-track" style="width:90%; max-width:500px; height:200px; margin:20px auto; border:3px solid #fff; border-radius:12px; position:relative; background:#111; overflow:hidden;">
-  <div id="finish-line" style="position:absolute; top:0; right:10px; width:4px; height:100%; background:red;"></div>
+  <div id="finish-line" style="position:absolute; top:0; left:10px; width:4px; height:100%; background:red;"></div>
 
-  <!-- Emoji นักแข่ง -->
-  <div class="racer" id="racer1" style="position:absolute; top:20px; left:0; font-size:2em;">🐢</div>
-  <div class="racer" id="racer2" style="position:absolute; top:70px; left:0; font-size:2em;">🐇</div>
-  <div class="racer" id="racer3" style="position:absolute; top:120px; left:0; font-size:2em;">🐓</div>
+  <!-- Emoji นักแข่ง (เริ่มจากขวา) -->
+  <div class="racer" id="racer1" style="position:absolute; top:20px; right:0; font-size:2em;">🐢</div>
+  <div class="racer" id="racer2" style="position:absolute; top:70px; right:0; font-size:2em;">🐇</div>
+  <div class="racer" id="racer3" style="position:absolute; top:120px; right:0; font-size:2em;">🍺</div>
 </div>
 
 <p id="race-result" style="text-align:center; font-size:1.3em; margin-top:10px;"></p>
@@ -515,26 +515,30 @@ function playTruthOrDare() {
 </script>
 
 <script>
-function startRace(){
-  document.getElementById("race-result").textContent = "";
+function startRace() {
+  document.getElementById("race-result").textContent = "🏁 การแข่งเริ่มแล้ว!";
   const racers = document.querySelectorAll(".racer");
   let finished = false;
 
-  racers.forEach(racer=>{
-    racer.style.left = "0px"; // reset
-    const move = setInterval(()=>{
-      if(finished) { clearInterval(move); return; }
+  racers.forEach(racer => {
+    let pos = 0; // ใช้เป็นค่า pixel ขยับจากขวา
+    const speed = Math.random() * 2 + 1; // ความเร็วสุ่ม
 
-      let pos = parseInt(racer.style.left);
-      pos += Math.floor(Math.random()*8); // random speed
-      racer.style.left = pos+"px";
+    function move() {
+      if (finished) return;
+      pos += speed; 
+      racer.style.right = pos + "px"; // ขยับจากขวาไปซ้าย
 
-      if(pos + 40 >= document.getElementById("race-track").offsetWidth){
-        finished = true;
-        document.getElementById("race-result").textContent = racer.textContent+" ชนะเลิศ! 🎉";
-        clearInterval(move);
+      // เมื่อชนเส้นชัย (ด้านซ้าย)
+     if (pos >= document.getElementById("race-track").offsetWidth - 40) {
+  finished = true;
+  document.getElementById("race-result").innerHTML = 
+    `<span style="color:black;">🥇 ผู้ชนะคือ ${racer.textContent}</span>`;
+} else {
+        requestAnimationFrame(move);
       }
-    },100);
+    }
+    move();
   });
 }
 </script>
