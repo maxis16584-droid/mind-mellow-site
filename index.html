@@ -525,17 +525,17 @@ function startRace() {
 
   racers.forEach(racer => {
     let pos = 0; // ระยะที่วิ่งจากขวา
-    const baseSpeed = Math.random() * 0.7 + 0.5; // ★ วิ่งช้าลง + สูสี
+    const baseSpeed = Math.random() * 0.2 + 0.1; // ★ วิ่งช้าลง + สูสี
     let extraBoost = false; // ใช้กันเร่งสปีดครั้งเดียว
 
     function move() {
       if (finished) return;
 
       // ตรวจว่าถึงช่วงท้าย (ใกล้เส้นชัยแล้ว)
-      const remaining = trackWidth - pos - 40;
+      const remaining = trackWidth - pos - 60;
       let speed = baseSpeed;
 
-      if (remaining < 120 && !extraBoost) {
+      if (remaining < 200 && !extraBoost) {
         // ★ มีโอกาสสุ่มเร่งสปีด
         if (Math.random() < 0.5) { 
           speed += Math.random() * 3 + 2; // เร่งสปีด
