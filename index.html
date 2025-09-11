@@ -263,7 +263,7 @@ header img {
     <img src="qrcode.png" alt="QR Code พร้อมเพย์"> 
   </div>
 
-  <!-- ปุ่มกดเล่น -->
+  <!-- ปุ่มกดเล่น --> 
   <div style="margin-top:20px;">
     <button onclick="startGame()">🎮 เล่นเกม Emoji Rush</button>
    <div style="margin-top:15px; text-align:center; font-size:2em; line-height:1.6; color:black;">
@@ -277,12 +277,28 @@ header img {
 
     <!-- Truth or Dare -->
 <div id="truth-dare-section" style="margin-top:40px; text-align:center;">
-  <button onclick="playTruthOrDare()">🎲Truth or Dare</button>
+  <button onclick="playTruthOrDare()">🎲 Truth or Dare</button>
   <div id="truth-dare-result" style="margin-top:20px; font-size:1.4em; color:black; font-weight:bold;"></div>
 </div>
-  
+
+     <div style="margin-top:30px;">
+  <button onclick="startRace()">🏁 เริ่มเกม Emoji Race</button>
+</div>
   </div>
 
+<!-- Track -->
+<div id="race-track" style="width:90%; max-width:500px; height:200px; margin:20px auto; border:3px solid #fff; border-radius:12px; position:relative; background:#111; overflow:hidden;">
+  <div id="finish-line" style="position:absolute; top:0; right:10px; width:4px; height:100%; background:red;"></div>
+
+  <!-- Emoji นักแข่ง -->
+  <div class="racer" id="racer1" style="position:absolute; top:20px; left:0; font-size:2em;">🐢</div>
+  <div class="racer" id="racer2" style="position:absolute; top:70px; left:0; font-size:2em;">🐇</div>
+  <div class="racer" id="racer3" style="position:absolute; top:120px; left:0; font-size:2em;">🐓</div>
+</div>
+
+<p id="race-result" style="text-align:center; font-size:1.3em; margin-top:10px;"></p>
+
+  
   <!-- กล่องเกม -->
   <div id="game-section" style="display:none;">
     <div id="game-area" class="game-velvet">
@@ -498,6 +514,31 @@ function playTruthOrDare() {
 }
 </script>
 
+<script>
+function startRace(){
+  document.getElementById("race-result").textContent = "";
+  const racers = document.querySelectorAll(".racer");
+  let finished = false;
+
+  racers.forEach(racer=>{
+    racer.style.left = "0px"; // reset
+    const move = setInterval(()=>{
+      if(finished) { clearInterval(move); return; }
+
+      let pos = parseInt(racer.style.left);
+      pos += Math.floor(Math.random()*8); // random speed
+      racer.style.left = pos+"px";
+
+      if(pos + 40 >= document.getElementById("race-track").offsetWidth){
+        finished = true;
+        document.getElementById("race-result").textContent = racer.textContent+" ชนะเลิศ! 🎉";
+        clearInterval(move);
+      }
+    },100);
+  });
+}
+</script>
+  
 
 </body>
 </html>
