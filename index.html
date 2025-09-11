@@ -293,7 +293,7 @@ header img {
   <!-- Emoji นักแข่ง (เริ่มจากขวา) -->
   <div class="racer" id="racer1" style="position:absolute; top:20px; right:0; font-size:2em;">🐢</div>
   <div class="racer" id="racer2" style="position:absolute; top:70px; right:0; font-size:2em;">🐇</div>
-  <div class="racer" id="racer3" style="position:absolute; top:120px; right:0; font-size:2em;">🍺</div>
+  <div class="racer" id="racer3" style="position:absolute; top:120px; right:0; font-size:2em;">🐓</div>
 </div>
 
 <p id="race-result" style="text-align:center; font-size:1.3em; margin-top:10px;"></p>
@@ -516,13 +516,13 @@ function playTruthOrDare() {
 
 <script>
 function startRace() {
-  document.getElementById("race-result").textContent = "🏁 การแข่งเริ่มแล้ว!";
+  document.getElementById("race-result").innerHTML = `<span style="color:black;">🏁 การแข่งเริ่มแล้ว!</span>`;
   const racers = document.querySelectorAll(".racer");
   let finished = false;
 
   racers.forEach(racer => {
     let pos = 0; // ใช้เป็นค่า pixel ขยับจากขวา
-    const speed = Math.random() * 2 + 1; // ความเร็วสุ่ม
+    const speed = Math.random() * 0.5 + 0.5; // ความเร็วสุ่ม
 
     function move() {
       if (finished) return;
