@@ -56,13 +56,13 @@ main {
   overflow:hidden;
   z-index:1;
 }
-h2 {
-  text-align: center;
-  font-size: 1.5em;
-  margin-bottom: 20px;
-  color: #b30000; /* ใช้สีแดงเข้มให้คุมธีม */
-  text-shadow: 2px 2px 5px rgba(0,0,0,0.3);
-}
+h2 { 
+  text-align:center; 
+  color:#b30000; 
+  margin-bottom:20px; 
+  font-weight:700; 
+  font-size:1.5em; }
+
 input, textarea {
   width:100%;
   padding:14px;
@@ -247,34 +247,7 @@ header img {
   box-shadow: 0 6px 18px rgba(0,0,0,0.5); /* เงากล่อง */
 }
 
-  section {
-  width: 100%;
-  max-width: 800px;
-  margin: 40px auto;
-  padding: 30px;
-  border-radius: 20px;
-  box-shadow: 0 8px 20px rgba(0,0,0,0.3);
-}
-
-/* ฝากข้อความ */
-#messages {
-  background: rgba(255, 255, 255, 0.9);
-  color: black;
-}
-
-/* สนับสนุนเรา */
-#support {
-  background: #111;
-  color: white;
-  text-align: center;
-}
-
-/* เกมส์ */
-#games {
-  background: rgba(255, 255, 255, 0.9);
-  color: black;
-}
-  
+ 
 </style>
 </head>
 <body>
@@ -287,9 +260,7 @@ header img {
 </header>
 
 <main>
- <section id="messages">
   <h2>ฝากข้อความหาเรา</h2>
-   </section>
   <form id="messageForm">
     <input type="text" id="name" placeholder="ชื่อของคุณ" required><br>
     <textarea id="message" placeholder="ข้อความ..." required></textarea><br>
@@ -337,17 +308,10 @@ header img {
   
   <div class="tip-section">
     <span class="tip-heart">❤️</span>
-   <section id="support">
     <h2>สนับสนุนเรา</h2>
-     </section>
     <p>สแกน QR พร้อมเพย์เพื่อส่งทิป</p>
     <img src="qrcode.png" alt="QR Code พร้อมเพย์"> 
   </div>
-
-  <section id="games">
-    <h2>🎮 เกมส์</h2>
-  <!-- Emoji Rush, True or Dare, Emoji Race -->
-</section>
 
   <!-- ปุ่มกดเล่น --> 
   <div style="margin-top:20px;">
