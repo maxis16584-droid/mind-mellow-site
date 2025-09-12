@@ -79,20 +79,22 @@ input:focus, textarea:focus {
   box-shadow:0 0 12px rgba(128,0,0,0.4);
 }
 button {
-  background: #ff3333;
+  background: #b30000;             /* แดงเข้ม */
   color: white;
   padding: 14px 28px;
   border: none;
-  border-radius: 50px;           /* pill shape */
+  border-radius: 50px;             /* pill shape */
   font-size: 1.1em;
   font-weight: bold;
   cursor: pointer;
   transition: 0.3s;
-  box-shadow: 4px 6px 0px black; /* เงา */
+  box-shadow: 4px 6px 0px black;
+  display: block;                  /* จัดให้อยู่บรรทัดเดียว */
+  margin: 15px auto;               /* กึ่งกลางแนวนอน */
 }
 
 button:hover {
-  background: #cc0000;
+  background: #800000;             /* hover เป็นแดงเข้มกว่า */
   transform: translateY(-2px);
   box-shadow: 6px 8px 0px black;
 }
@@ -284,21 +286,21 @@ header img {
  #messages-box {
   width: 90%;
   max-width: 600px;
-  height: auto;                     /* ให้สูงตามข้อความ */
   margin: 20px auto;
-  background: #ff3333;              /* พื้นหลังแดง */
-  border-radius: 10px;              /* มุมโค้งเล็กน้อย */
+  background: #b30000;             /* แดงเข้ม ตามธีม */
+  border-radius: 12px;             /* มุมโค้งเล็กน้อย */
   padding: 20px;
-  box-shadow: 6px 8px 0px black;    /* เงาดำ */
+  box-shadow: 6px 8px 0px black;   /* เงาดำด้านล่าง */
   text-align: center;
 }
+
 #messages {
-  color: white;                     /* ตัวอักษรสีขาว */
+  color: white;                    /* ตัวอักษรขาว */
   font-size: 1.1em;
   line-height: 1.6;
 }
 #messages div {
-  margin-bottom: 12px;
+  margin-bottom: 10px;
 }
 
 </style>
