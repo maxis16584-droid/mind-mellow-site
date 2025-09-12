@@ -79,23 +79,24 @@ input:focus, textarea:focus {
   box-shadow:0 0 12px rgba(128,0,0,0.4);
 }
 button {
-  background:#b30000;
-  color:white;
-  padding:15px;
-  border:none;
-  border-radius:15px;
-  width:100%;
-  font-size:1.2em;
-  cursor:pointer;
-  font-weight:600;
-  transition:0.3s;
-  box-shadow:0 6px 20px rgba(0,0,0,0.3);
+  background: #ff3333;
+  color: white;
+  padding: 14px 28px;
+  border: none;
+  border-radius: 50px;           /* pill shape */
+  font-size: 1.1em;
+  font-weight: bold;
+  cursor: pointer;
+  transition: 0.3s;
+  box-shadow: 4px 6px 0px black; /* เงา */
 }
+
 button:hover {
-  background:#800000;
-  transform:translateY(-3px);
-  box-shadow:0 10px 25px rgba(0,0,0,0.5);
+  background: #cc0000;
+  transform: translateY(-2px);
+  box-shadow: 6px 8px 0px black;
 }
+
 .tip-section {
   text-align:center;
   margin-top:30px;
@@ -280,29 +281,26 @@ header img {
 </div>
 
 <style>
-  #messages-box {
-    width: 90%;
-    max-width: 600px;
-    height: 300px;              /* กล่องใหญ่ขึ้น */
-    margin: 20px auto;
-    background: rgba(0,0,0,0.85); /* พื้นหลังดำ */
-    border-radius: 15px;
-    padding: 20px;
-    overflow-y: auto;
-    box-shadow: 0 0 15px rgba(0,0,0,0.8);
-  }
+ #messages-box {
+  width: 90%;
+  max-width: 600px;
+  height: auto;                     /* ให้สูงตามข้อความ */
+  margin: 20px auto;
+  background: #ff3333;              /* พื้นหลังแดง */
+  border-radius: 10px;              /* มุมโค้งเล็กน้อย */
+  padding: 20px;
+  box-shadow: 6px 8px 0px black;    /* เงาดำ */
+  text-align: center;
+}
+#messages {
+  color: white;                     /* ตัวอักษรสีขาว */
+  font-size: 1.1em;
+  line-height: 1.6;
+}
+#messages div {
+  margin-bottom: 12px;
+}
 
-  #messages {
-    color: white;                /* ตัวหนังสือสีขาว */
-    font-size: 1.1em;
-    line-height: 1.6;
-    text-align: center;          /* ข้อความตรงกลาง */
-  }
-
-  #messages div {
-    margin-bottom: 12px;
-    text-shadow: 1px 1px 3px rgba(0,0,0,0.7);
-  }
 </style>
   
   <div class="tip-section">
