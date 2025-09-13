@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="th">
+<html lang="th" id="html-root">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>สนับสนุน Mind Mellow</title>
+<title id="page-title">สนับสนุน Mind Mellow</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@400;700&family=Prompt:wght@400;600&display=swap" rel="stylesheet">
 
@@ -44,14 +44,14 @@ header small {
   font-weight:400;
   margin-top:5px;
 }
-main {
+main.white-box {
   position:relative;
   width:90%;
   max-width:500px;
   background:rgba(255,255,255,0.95);
   border-radius:25px;
   padding:40px 30px 30px 30px;
-  margin-top:20px;
+  margin:20px auto;
   box-shadow:0 15px 30px rgba(0,0,0,0.4);
   overflow:hidden;
   z-index:1;
@@ -118,17 +118,163 @@ button:hover {
   margin-bottom:15px;
 }
 .tip-section img {
-  width:240px; height:240px; 
-  border-radius:25px;
-  border:6px solid #b30000; 
-  box-shadow:0 10px 30px rgba(0,0,0,0.4);
+  width:240px; height:240px;
+  border-radius:0px;
+  border:6px solid #b30000;
+  box-shadow:6px 8px 0px black;
 }
 footer {
   margin:25px 0;
   font-size:1em;
-  color:#800000;
+  color:white;
   text-align:center;
-  text-shadow:1px 1px 3px rgba(0,0,0,0.3);
+  text-shadow:2px 2px 6px rgba(0,0,0,0.8);
+  background:rgba(0,0,0,0.4);
+  padding:15px;
+  border-radius:15px;
+  max-width:400px;
+  margin:25px auto;
+}
+
+.lang-toggle {
+  position: fixed;
+  top: 15px;
+  right: 15px;
+  background: rgba(255,255,255,0.9);
+  border: 2px solid #b30000;
+  border-radius: 25px;
+  padding: 8px 15px;
+  cursor: pointer;
+  font-weight: bold;
+  color: #b30000;
+  transition: 0.3s;
+  z-index: 1000;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+}
+.lang-toggle:hover {
+  background: #b30000;
+  color: white;
+  box-shadow: 0 6px 12px rgba(0,0,0,0.4);
+  transform: translateY(-1px);
+}
+
+.game-item {
+  margin-bottom: 30px;
+  text-align: center;
+}
+
+.game-rules {
+  margin-top: 15px;
+  font-size: 1.2em;
+  line-height: 1.6;
+  color: black;
+}
+
+.game-separator {
+  border: none;
+  height: 3px;
+  background: linear-gradient(to right, transparent, #b30000, transparent);
+  margin: 40px 0;
+  border-radius: 2px;
+}
+
+.truth-dare-buttons {
+  display: flex;
+  gap: 15px;
+  justify-content: center;
+  margin: 20px 0;
+}
+
+.truth-dare-buttons button {
+  flex: 1;
+  max-width: 150px;
+  margin: 0;
+}
+
+#truth-dare-title {
+  text-align: center;
+  color: #b30000;
+  margin-bottom: 15px;
+  font-weight: 700;
+  font-size: 1.3em;
+}
+
+#truth-dare-result {
+  margin-top: 20px;
+  font-size: 1.4em;
+  color: black;
+  font-weight: bold;
+}
+
+#status {
+  margin-top: 12px;
+  text-align: center;
+  color: black;
+  font-weight: bold;
+}
+
+#messages-box {
+  width: 100%;
+  margin: 20px auto;
+  background: #b30000;
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 6px 8px 0px black;
+  text-align: center;
+  height: 280px;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  overflow-y: auto;
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* Internet Explorer 10+ */
+}
+
+#messages-box::-webkit-scrollbar {
+  display: none; /* WebKit */
+}
+
+#messages {
+  color: white;
+  font-size: 1.1em;
+  line-height: 1.6;
+  transition: opacity 0.3s ease;
+  width: 100%;
+  min-height: 240px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  padding-top: 20px;
+}
+
+#messages div {
+  margin-bottom: 12px;
+  animation: fadeIn 0.3s ease-in;
+  text-align: center;
+  padding: 5px;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.loading-text {
+  color: rgba(255,255,255,0.8);
+  font-size: 1.2em;
+  font-style: italic;
+  text-align: center;
+  animation: pulse 1.5s ease-in-out infinite;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  margin: 0;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 0.5; }
+  50% { opacity: 1; }
 }
 
 /* ================= GAME ================= */
@@ -149,18 +295,31 @@ footer {
   color: #fff;
   border: none;
   border-radius: 12px;
-  padding: 8px 12px;
+  padding: 10px 12px;
   font-weight: bold;
+  font-size: 16px;
   cursor: pointer;
-  z-index: 1000;
+  z-index: 1001;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+  transition: all 0.2s;
+}
+.fs-exit-btn:hover {
+  background: #ff3742;
+  transform: scale(1.1);
+}
+.fs-exit-btn:active {
+  transform: scale(0.95);
 }
 #score, #timer {
   position: absolute;
-  bottom: 10px;
-  font-size: 1.6em;
+  bottom: 15px;
+  font-size: 1.4em;
   font-weight: bold;
-  text-shadow: 2px 2px 6px rgba(0,0,0,0.7);
+  text-shadow: 2px 2px 6px rgba(0,0,0,0.8);
   z-index: 100;
+  background: rgba(0,0,0,0.6);
+  padding: 8px 12px;
+  border-radius: 8px;
 }
 #score { left: 15px; color: #fff; }
 #timer { right: 15px; color: #ff4444; }
@@ -254,96 +413,82 @@ header img {
 
 <div class="emoji-bg" id="emojiContainer"></div>
 
+<button class="lang-toggle" onclick="toggleLanguage()" id="lang-btn">EN</button>
+
 <header>
-   <img src="Mind Mellow-02.png" alt="Mind Mellow"> 
-  <small>SBD bar ทุกวันเสาร์ 21:00-22:00 / 22:30-23:30</small>
+   <img src="Mind Mellow-02.png" alt="Mind Mellow">
+  <small id="schedule-text">SBD bar ทุกวันเสาร์ 21:00-22:00 / 22:30-23:30</small>
 </header>
 
-<main>
-  <h2>ฝากข้อความหาเรา</h2>
+<!-- SECTION 1: MESSAGE & LIVE MESSAGES BOX -->
+<main class="white-box">
+  <h2 id="message-header">ฝากข้อความหาเรา</h2>
   <form id="messageForm">
     <input type="text" id="name" placeholder="ชื่อของคุณ" required><br>
     <textarea id="message" placeholder="ข้อความ..." required></textarea><br>
-    <button type="submit">ส่งข้อความ</button>
+    <button type="submit" id="submit-btn">ส่งข้อความ</button>
   </form>
   <div id="status"></div>
 
-  <style>
-#status {
-  margin-top: 12px;
-  text-align: center;
-  color: black;   /* ★ สีดำ */
-  font-weight: bold;
-}
-</style>
+  <h2 id="recent-messages-header">ข้อความล่าสุด 📩</h2>
+  <div id="messages-box">
+    <div id="messages"></div>
+  </div>
+</main>
 
- <h2>ข้อความล่าสุด 📩</h2>
-
-<div id="messages-box">
-  <div id="messages"></div>
-</div>
-
-<style>
- #messages-box {
-  width: 90%;
-  max-width: 600px;
-  margin: 20px auto;
-  background: #b30000;             /* แดงเข้ม ตามธีม */
-  border-radius: 12px;             /* มุมโค้งเล็กน้อย */
-  padding: 20px;
-  box-shadow: 6px 8px 0px black;   /* เงาดำด้านล่าง */
-  text-align: center;
-}
-
-#messages {
-  color: white;                    /* ตัวอักษรขาว */
-  font-size: 1.1em;
-  line-height: 1.6;
-}
-#messages div {
-  margin-bottom: 10px;
-}
-
-</style>
-  
+<!-- SECTION 2: QR CODE SUPPORT BOX -->
+<main class="white-box">
   <div class="tip-section">
     <span class="tip-heart">❤️</span>
-    <h2>สนับสนุนเรา</h2>
-    <p>สแกน QR พร้อมเพย์เพื่อส่งทิป</p>
-    <img src="qrcode.png" alt="QR Code พร้อมเพย์"> 
+    <h2 id="support-header">สนับสนุนเรา</h2>
+    <p id="qr-instruction">สแกน QR พร้อมเพย์เพื่อส่งทิป</p>
+    <img src="qrcode.png" alt="QR Code พร้อมเพย์">
+  </div>
+</main>
+
+<!-- SECTION 3: GAMES BOX -->
+<main class="white-box">
+  <h2 id="games-header">เกมส์</h2>
+
+  <!-- Emoji Rush Game -->
+  <div class="game-item">
+    <button onclick="startGame()" id="game-btn">💣 Emoji Rush</button>
+    <div class="game-rules">
+      <p><strong id="rules-header">กติกา:</strong></p>
+      <p id="rule1">❤️ = +5 แต้ม</p>
+      <p id="rule2">🍺 = +10 แต้ม</p>
+      <p id="rule3">⚫️ = +15 แต้ม</p>
+      <p id="rule4">🖤 = -10 แต้ม</p>
+      <p id="rule5">💣 = -20 แต้ม</p>
+    </div>
   </div>
 
-  <!-- ปุ่มกดเล่น --> 
-  <div style="margin-top:20px;">
-    <button onclick="startGame()">💣 Emoji Rush</button>
-   <div style="margin-top:15px; text-align:center; font-size:1.5em; line-height:1.6; color:black;">
-  <p><strong> กติกา:</strong></p>
-  <p>❤️ = +5 แต้ม</p>
-  <p>🍺 = +10 แต้ม</p>
-  <p>⚫️ = +15 แต้ม</p>
-  <p>🖤 = -10 แต้ม</p>
-  <p>💣 = -20 แต้ม</p>
-</div>
+  <!-- Game Separator -->
+  <hr class="game-separator">
 
-    <!-- Truth or Dare -->
-<div id="truth-dare-section" style="margin-top:40px; text-align:center;">
-  <button onclick="playTruthOrDare()">🎲 Truth or Dare</button>
-  <div id="truth-dare-result" style="margin-top:20px; font-size:1.4em; color:black; font-weight:bold;"></div>
-</div>
-  
-  <!-- กล่องเกม -->
+  <!-- Truth or Dare Game -->
+  <div class="game-item">
+    <h3 id="truth-dare-title">🎲 Truth or Dare</h3>
+    <div class="truth-dare-buttons">
+      <button onclick="playTruth()" id="truth-btn">🔵 Truth</button>
+      <button onclick="playDare()" id="dare-btn">🔴 Dare</button>
+    </div>
+    <div id="truth-dare-result"></div>
+  </div>
+
+  <!-- Game Modal -->
   <div id="game-section" style="display:none;">
     <div id="game-area" class="game-velvet">
-      <button class="fs-exit-btn" onclick="exitFullscreen()">✕</button>
+      <button class="fs-exit-btn" onclick="closeGame()">✕</button>
       <div id="score">คะแนน: 0</div>
       <div id="timer">เวลา: 20</div>
       <div id="end-modal" class="end-modal">
         <div class="end-card">
-          <h3>หมดเวลา!</h3>
+          <h3 id="game-over-text">หมดเวลา!</h3>
           <p id="final-score"></p>
           <div class="end-actions">
-            <button onclick="startGame()">เล่นอีกครั้ง</button>
-            <button onclick="exitFullscreen()">ปิด</button>
+            <button onclick="startGame()" id="play-again-btn">เล่นอีกครั้ง</button>
+            <button onclick="closeGame()" id="close-game-btn">ปิด</button>
           </div>
         </div>
       </div>
@@ -351,7 +496,7 @@ header img {
   </div>
 </main>
 
-<footer>ขอบคุณที่สนับสนุนเรา 🎵</footer>
+<footer id="footer-text">ขอบคุณที่สนับสนุนเรา 🎵</footer>
 
 <!-- ============ Scripts ============ -->
 <script>
@@ -374,10 +519,10 @@ form.addEventListener('submit', async (e) => {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(data)
     });
-    statusEl.innerText = "✅ ส่งข้อความแล้ว!";
+    statusEl.innerText = translations[currentLang].messageSent;
     form.reset();
   } catch (err) {
-    statusEl.innerText = "❌ มีปัญหา: " + err.message;
+    statusEl.innerText = translations[currentLang].messageError + err.message;
   }
 });
 </script>
@@ -445,14 +590,14 @@ animate();
     } else { goFallback(); }
 
     score = 0; gameTime = GAME_DURATION;
-    document.getElementById('score').textContent = 'คะแนน: 0';
-    document.getElementById('timer').textContent = 'เวลา: ' + gameTime;
+    document.getElementById('score').textContent = translations[currentLang].scoreText + ' 0';
+    document.getElementById('timer').textContent = translations[currentLang].timeText + ' ' + gameTime;
 
     running = true;
     spawnTimer = setInterval(spawnEmoji, SPAWN_INTERVAL);
     timerInterval = setInterval(()=>{
       gameTime--;
-      document.getElementById('timer').textContent = 'เวลา: ' + gameTime;
+      document.getElementById('timer').textContent = translations[currentLang].timeText + ' ' + gameTime;
       if (gameTime <= 0) endGame();
     }, 1000);
   };
@@ -470,7 +615,7 @@ animate();
       el.style.top=randInt(40,H-80)+"px";
       const onHit=()=>{
         score+=points;
-        document.getElementById("score").textContent="คะแนน: "+score;
+        document.getElementById("score").textContent=translations[currentLang].scoreText+" "+score;
         const float=document.createElement("div");
         float.className="floating-points";
         float.textContent=(points>0?"+":"")+points;
@@ -491,21 +636,70 @@ animate();
     running=false; clearInterval(spawnTimer); clearInterval(timerInterval);
     const modal=document.getElementById("end-modal");
     modal.style.display="flex";
-    document.getElementById("final-score").textContent="คุณได้คะแนน "+score+" แต้ม";
+
+    document.getElementById("game-over-text").textContent=translations[currentLang].gameOverText;
+    document.getElementById("final-score").textContent=translations[currentLang].yourScoreText+" "+score+" "+translations[currentLang].pointsText;
+    document.getElementById("play-again-btn").textContent=translations[currentLang].playAgainBtn;
+    document.getElementById("close-game-btn").textContent=translations[currentLang].closeGameBtn;
   }
+
+  window.closeGame=()=>{
+    running=false;
+
+    if(spawnTimer) clearInterval(spawnTimer);
+    if(timerInterval) clearInterval(timerInterval);
+
+    if(document.fullscreenElement) {
+      document.exitFullscreen().catch(() => {});
+    }
+
+    document.body.classList.remove('fs-open');
+    const gameSection = document.getElementById("game-section");
+    const endModal = document.getElementById("end-modal");
+
+    if(gameSection) gameSection.style.display="none";
+    if(endModal) endModal.style.display="none";
+
+    const gameArea = document.getElementById("game-area");
+    if(gameArea) {
+      const emojis = gameArea.querySelectorAll('.emoji-item');
+      emojis.forEach(emoji => emoji.remove());
+      const floatingPoints = gameArea.querySelectorAll('.floating-points');
+      floatingPoints.forEach(point => point.remove());
+    }
+  };
 
   window.exitFullscreen=()=>{
     running=false;
-    if(document.fullscreenElement) document.exitFullscreen();
+
+    if(spawnTimer) clearInterval(spawnTimer);
+    if(timerInterval) clearInterval(timerInterval);
+
+    if(document.fullscreenElement) {
+      document.exitFullscreen().catch(() => {});
+    }
+
     document.body.classList.remove('fs-open');
-    document.getElementById("game-section").style.display="none";
+    const gameSection = document.getElementById("game-section");
+    const endModal = document.getElementById("end-modal");
+
+    if(gameSection) gameSection.style.display="none";
+    if(endModal) endModal.style.display="none";
+
+    const gameArea = document.getElementById("game-area");
+    if(gameArea) {
+      const emojis = gameArea.querySelectorAll('.emoji-item');
+      emojis.forEach(emoji => emoji.remove());
+      const floatingPoints = gameArea.querySelectorAll('.floating-points');
+      floatingPoints.forEach(point => point.remove());
+    }
   };
 })();
 </script>
 
   <script>
 // Truth or Dare
-const TRUTH = [
+const TRUTH_TH = [
   "เมาแล้วเคยโทรหาแฟนเก่ามั้ย?",
   "มี sex ครั้งล่าสุดตอนไหน?",
   "เคยมี one-night stand กี่ครั้ง",
@@ -518,7 +712,7 @@ const TRUTH = [
   "ในกลุ่มนี้ ใครคือคนที่เราคิดว่าสนิทมากที่สุด?"
 ];
 
-const DARE = [
+const DARE_TH = [
   "ถ่ายสตอรี่ลงไอจี แล้วพูดว่า แคปชั่นไม่รู้ แคปหมูแน่นอน",
   "ไปชนแก้วกับคนแปลกหน้า 2 คน",
   "เดินไปซื้อเบียร์เพิ่มอีก 1 โปร",
@@ -531,17 +725,56 @@ const DARE = [
   "ลุกขึ้นยืนและชูแก้วสูงๆ ตะโกนว่า ชน! และดื่มให้หมดแก้ว"
 ];
 
-function playTruthOrDare() {
-  const resultEl = document.getElementById("truth-dare-result");
-  const choice = Math.random() < 0.5 ? "Truth" : "Dare";
-  let question;
+const TRUTH_EN = [
+  "Have you ever drunk-dialed an ex?",
+  "When was the last time you had sex?",
+  "How many one-night stands have you had?",
+  "What's the weirdest place you've had sex?",
+  "Which ex did you love the most?",
+  "Have you ever had a crush on someone at work/school?",
+  "What's the strangest place you've been intimate?",
+  "Have you ever had relationship problems because of sex?",
+  "When did you last masturbate?",
+  "In this group, who do you think you're closest to?"
+];
 
+const DARE_EN = [
+  "Post an Instagram story saying 'Caption? More like pig caption'",
+  "Go clink glasses with 2 strangers",
+  "Go buy another round of beers",
+  "Go stand and dance in front of the shop window for 10 seconds",
+  "Hold a big ice cube in your mouth until it melts completely",
+  "Stand still for 5 minutes",
+  "Like the first person's Instagram story that comes up",
+  "Add a folk song to your Instagram notes",
+  "Take a selfie with the shop owner",
+  "Stand up, raise your glass high, shout 'Cheers!' and finish your drink"
+];
+
+function playTruth() {
+  const resultEl = document.getElementById("truth-dare-result");
+  const truthArray = currentLang === 'th' ? TRUTH_TH : TRUTH_EN;
+  const truthLabel = currentLang === 'th' ? 'Truth' : 'Truth';
+
+  const question = truthArray[Math.floor(Math.random() * truthArray.length)];
+  resultEl.innerHTML = `🔵 <b>${truthLabel}:</b> ${question}`;
+}
+
+function playDare() {
+  const resultEl = document.getElementById("truth-dare-result");
+  const dareArray = currentLang === 'th' ? DARE_TH : DARE_EN;
+  const dareLabel = currentLang === 'th' ? 'Dare' : 'Dare';
+
+  const question = dareArray[Math.floor(Math.random() * dareArray.length)];
+  resultEl.innerHTML = `🔴 <b>${dareLabel}:</b> ${question}`;
+}
+
+function playTruthOrDare() {
+  const choice = Math.random() < 0.5 ? "Truth" : "Dare";
   if (choice === "Truth") {
-    question = TRUTH[Math.floor(Math.random() * TRUTH.length)];
-    resultEl.innerHTML = `🔵 <b>Truth:</b> ${question}`;
+    playTruth();
   } else {
-    question = DARE[Math.floor(Math.random() * DARE.length)];
-    resultEl.innerHTML = `🔴 <b>Dare:</b> ${question}`;
+    playDare();
   }
 }
 </script>
@@ -553,21 +786,45 @@ const GET_URL = "https://script.google.com/macros/s/AKfycbwUaIiLVXuBBd4wV_UWSbta
 
 async function loadMessages() {
   try {
+    const messagesDiv = document.getElementById("messages");
+
+    // Fade out current content and show loading spinner
+    messagesDiv.style.opacity = '0.3';
+
+    setTimeout(() => {
+      messagesDiv.innerHTML = `<div class="loading-text">${translations[currentLang].loadingText}</div>`;
+    }, 150);
+
     const res = await fetch(GET_URL);
     const data = await res.json();
 
-    const messagesDiv = document.getElementById("messages");
+    // Small delay to show loading animation
+    await new Promise(resolve => setTimeout(resolve, 400));
+
+    // Clear content and add new messages
     messagesDiv.innerHTML = "";
 
-    // เอาข้อความล่าสุด 5 อัน
-    data.reverse().slice(0, 5).forEach(row => {
-      const div = document.createElement("div");
-     div.innerHTML = `<strong style="color:black;">${row.name}</strong>: ${row.message}`;
-      messagesDiv.appendChild(div);
-    });
+    // Add messages or empty state
+    if (data && data.length > 0) {
+      // เอาข้อความล่าสุด 5 อัน
+      data.reverse().slice(0, 5).forEach((row, index) => {
+        const div = document.createElement("div");
+        div.innerHTML = `<strong style="color:black;">${row.name}</strong>: ${row.message}`;
+        div.style.animationDelay = `${index * 50}ms`; // Stagger animations
+        messagesDiv.appendChild(div);
+      });
+    } else {
+      messagesDiv.innerHTML = '<div style="color: rgba(255,255,255,0.7); font-style: italic;">No messages yet...</div>';
+    }
+
+    // Fade back in
+    messagesDiv.style.opacity = '1';
 
   } catch (err) {
     console.error("โหลดข้อความผิดพลาด", err);
+    const messagesDiv = document.getElementById("messages");
+    messagesDiv.innerHTML = '<div style="color: rgba(255,255,255,0.7);">⚠ Unable to load messages</div>';
+    messagesDiv.style.opacity = '1';
   }
 }
 
@@ -578,7 +835,125 @@ loadMessages();
 setInterval(loadMessages, 5000);
 </script>
 
-  
+<script>
+// Language translations
+const translations = {
+  th: {
+    pageTitle: "สนับสนุน Mind Mellow",
+    schedule: "SBD bar ทุกวันเสาร์ 21:00-22:00 / 22:30-23:30",
+    messageHeader: "ฝากข้อความหาเรา",
+    namePlaceholder: "ชื่อของคุณ",
+    messagePlaceholder: "ข้อความ...",
+    submitBtn: "ส่งข้อความ",
+    recentMessages: "ข้อความล่าสุด 📩",
+    supportHeader: "สนับสนุนเรา",
+    qrInstruction: "สแกน QR พร้อมเพย์เพื่อส่งทิป",
+    gameBtn: "💣 Emoji Rush",
+    rulesHeader: "กติกา:",
+    rule1: "❤️ = +5 แต้ม",
+    rule2: "🍺 = +10 แต้ม",
+    rule3: "⚫️ = +15 แต้ม",
+    rule4: "🖤 = -10 แต้ม",
+    rule5: "💣 = -20 แต้ม",
+    truthDareTitle: "🎲 Truth or Dare",
+    truthBtn: "🔵 Truth",
+    dareBtn: "🔴 Dare",
+    gamesHeader: "เกมส์",
+    scoreText: "คะแนน:",
+    timeText: "เวลา:",
+    gameOverText: "หมดเวลา!",
+    playAgainBtn: "เล่นอีกครั้ง",
+    closeGameBtn: "ปิด",
+    yourScoreText: "คุณได้คะแนน",
+    pointsText: "แต้ม",
+    loadingText: "กำลังโหลดข้อความ...",
+    footerText: "ขอบคุณที่สนับสนุนเรา 🎵",
+    messageSent: "✅ ส่งข้อความแล้ว!",
+    messageError: "❌ มีปัญหา: "
+  },
+  en: {
+    pageTitle: "Support Mind Mellow",
+    schedule: "SBD bar every Saturday 21:00-22:00 / 22:30-23:30",
+    messageHeader: "Leave us a message",
+    namePlaceholder: "Your name",
+    messagePlaceholder: "Your message...",
+    submitBtn: "Send Message",
+    recentMessages: "Recent Messages 📩",
+    supportHeader: "Support Us",
+    qrInstruction: "Scan QR code to send tips",
+    gameBtn: "💣 Emoji Rush",
+    rulesHeader: "Rules:",
+    rule1: "❤️ = +5 points",
+    rule2: "🍺 = +10 points",
+    rule3: "⚫️ = +15 points",
+    rule4: "🖤 = -10 points",
+    rule5: "💣 = -20 points",
+    truthDareTitle: "🎲 Truth or Dare",
+    truthBtn: "🔵 Truth",
+    dareBtn: "🔴 Dare",
+    gamesHeader: "Games",
+    scoreText: "Score:",
+    timeText: "Time:",
+    gameOverText: "Time's Up!",
+    playAgainBtn: "Play Again",
+    closeGameBtn: "Close",
+    yourScoreText: "Your score:",
+    pointsText: "points",
+    loadingText: "Loading messages...",
+    footerText: "Thank you for supporting us 🎵",
+    messageSent: "✅ Message sent!",
+    messageError: "❌ Error: "
+  }
+};
+
+let currentLang = 'th';
+
+function toggleLanguage() {
+  currentLang = currentLang === 'th' ? 'en' : 'th';
+  updateLanguage();
+}
+
+function updateLanguage() {
+  const lang = translations[currentLang];
+
+  document.getElementById('html-root').lang = currentLang;
+
+  document.getElementById('page-title').textContent = lang.pageTitle;
+  document.getElementById('schedule-text').textContent = lang.schedule;
+  document.getElementById('message-header').textContent = lang.messageHeader;
+  document.getElementById('name').placeholder = lang.namePlaceholder;
+  document.getElementById('message').placeholder = lang.messagePlaceholder;
+  document.getElementById('submit-btn').textContent = lang.submitBtn;
+  document.getElementById('recent-messages-header').textContent = lang.recentMessages;
+  document.getElementById('support-header').textContent = lang.supportHeader;
+  document.getElementById('qr-instruction').textContent = lang.qrInstruction;
+  document.getElementById('game-btn').textContent = lang.gameBtn;
+  document.getElementById('rules-header').textContent = lang.rulesHeader;
+  document.getElementById('rule1').textContent = lang.rule1;
+  document.getElementById('rule2').textContent = lang.rule2;
+  document.getElementById('rule3').textContent = lang.rule3;
+  document.getElementById('rule4').textContent = lang.rule4;
+  document.getElementById('rule5').textContent = lang.rule5;
+  document.getElementById('truth-dare-title').textContent = lang.truthDareTitle;
+  document.getElementById('truth-btn').textContent = lang.truthBtn;
+  document.getElementById('dare-btn').textContent = lang.dareBtn;
+  document.getElementById('games-header').textContent = lang.gamesHeader;
+  document.getElementById('game-over-text').textContent = lang.gameOverText;
+  document.getElementById('play-again-btn').textContent = lang.playAgainBtn;
+  document.getElementById('close-game-btn').textContent = lang.closeGameBtn;
+  document.getElementById('footer-text').textContent = lang.footerText;
+
+  document.getElementById('lang-btn').textContent = currentLang === 'th' ? 'EN' : 'TH';
+
+  if (currentLang === 'en') {
+    document.body.style.fontFamily = "'Arial', 'Helvetica', sans-serif";
+  } else {
+    document.body.style.fontFamily = "'Kanit', 'Prompt', sans-serif";
+  }
+}
+
+updateLanguage();
+</script>
 
 </body>
 </html>
